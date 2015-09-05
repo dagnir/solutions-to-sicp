@@ -129,60 +129,53 @@ Then we can see that the any element of the triangle is the sum of the element d
 
 ###Ex 1.13
 
-Prove:
-
-$$ Fib(n) = \frac{\phi^n - \psi^n}{\sqrt{5}} $$
-
-where \\(\phi\\) and \\(\psi\\) are roots of the golden ratio.
+Prove $$ Fib(n) = \frac{\phi^n - \psi^n}{\sqrt{5}} $$, where $$\phi$$ and $$\psi$$ are roots of the golden ratio.
 
 Some useful facts:
 
-$$ 1 + \phi = \phi^2 $$
+* $$ 1 + \phi = \phi^2 $$
 
-$$ 1 + \psi = \psi^2 $$
+* $$ 1 + \psi = \psi^2 $$
 
 Proof by Induction:
 
 Base Case:
 
-\\(n = 0\\)
+Let $$n = 0$$, then
 
-$$ Fib(0) = \frac{\phi^0 - \psi^0}{\sqrt{5}} = \frac{0}{\sqrt{5}} = 0 $$
+$$
+\begin{equation}
+Fib(0) = \frac{\phi^0 - \psi^0}{\sqrt{5}} = \frac{0}{\sqrt{5}} = 0
+\end{equation}
+$$
 
 Inductive Hypothesis:
 
-Assume that \\(Fib(n) = \frac{\phi^k - \psi^k}{\sqrt{5}}\\)
+Assume that $$Fib(n) = \frac{\phi^k - \psi^k}{\sqrt{5}}$$
 
 Inductive Step:
 
-\\(n = k + 1\\)
+Let $$n = k + 1$$, then
 
-By definition of the Fibonacci series:
+$$
+\begin{equation*}
+    \begin{aligned}
+        Fib(k+1) &= Fib(k) + Fib(k-1) \\
+         &= \frac{\phi^k - \psi^k}{\sqrt{5}} + \frac{\phi^{k - 1} - \psi^{k - 1}}{\sqrt{5}} \\
+         &= \frac{\phi^k + \phi^{k - 1} - \psi^k - \psi^{k - 1}}{\sqrt{5}} \\
+         &= \frac{\phi^k + \phi^{k - 1} - (\psi^k + \psi^{k - 1})}{\sqrt{5}} \\
+         &= \frac{\phi^k(\phi + \phi^{-1}) - \psi^k(\psi + \psi^{-1})}{\sqrt{5}} \\
+         &= \frac{\phi^k(\frac{\phi}{\phi} + \frac{1}{\phi}) - \psi^k(\frac{\psi}{\psi} + \frac{1}{\psi})}{\sqrt{5}} \\
+         &= \frac{\phi^k(\frac{1+ \phi}{\phi}) - \psi^k(\frac{1+ \psi}{\psi})}{\sqrt{5}} \\
+         &= \frac{\phi^k(\frac{\phi^2}{\phi}) - \psi^k(\frac{\psi^2}{\psi})}{\sqrt{5}} \\
+         &= \frac{\phi^k(\phi) - \psi^k(\psi)}{\sqrt{5}} \\
+         &= \frac{\phi^{k+1} - \psi^{k+1}}{\sqrt{5}} \\
+    \end{aligned}
+\end{equation*}
+$$
+QED.
 
-$$ Fib(k+1) = Fib(k) + F(k - 1) $$
-
-Invoke Inductive Hypothesis:
-
-$$ = \frac{\phi^k - \psi^k}{\sqrt{5}} - \frac{\phi^{k - 1} - \psi^{k - 1}}{\sqrt{5}} $$
-
-Simplify:
-
-$$ = \frac{\phi^k + \phi^{k - 1} + \psi^k + \psi^{k - 1}}{\sqrt{5}} $$
-
-$$ = \frac{\phi^k(1 + \phi^{-1}) + \psi^k(1 + \psi^{-1})}{\sqrt{5}} $$
-
-$$ = \frac{\phi^k(1 + \frac{1}{\phi}) + \psi^k(1 + \frac{1}{\psi})}{\sqrt{5}} $$
-
-$$ = \frac{\phi^k(\frac{\phi}{\phi} + \frac{1}{\phi}) + \psi^k(\frac{\psi}{\psi} + \frac{1}{\psi})}{\sqrt{5}} $$
-
-$$ = \frac{\phi^k(\frac{1 + \phi}{\phi}) + \psi^k(\frac{1 + \psi}{\psi})}{\sqrt{5}} $$
-
-$$ = \frac{\phi^k(\frac{\phi^2}{\phi}) + \psi^k(\frac{\psi^2}{\psi})}{\sqrt{5}} $$
-
-$$ = \frac{\phi^k(\phi) + \psi^k(\psi)}{\sqrt{5}} $$
-
-$$ = \frac{\phi^{k + 1} + \psi^{k + 1}}{\sqrt{5}} $$
-
+The eight line comes from the defition of the golden ratio.
 
 ###Ex 1.14
 

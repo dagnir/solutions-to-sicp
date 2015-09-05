@@ -1,4 +1,4 @@
-###Ex 1.1###
+###Ex 1.1
 
 ```scheme
 10
@@ -48,14 +48,14 @@ b
 16
 ```
 
-###Ex 1.2###
+###Ex 1.2
 
 ```scheme
 (/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5)))))
    (* 3 (- 6 2) (- 2 7)))
 ```
 
-###Ex 1.3###
+###Ex 1.3
 
 ```scheme
 (define (ex1-3 a b c)
@@ -72,7 +72,7 @@ b
                   (sos c b)))))
 ```
 
-###Ex 1.4###
+###Ex 1.4
 
 ```scheme
 (define (a-plus-abs-b a b)
@@ -101,7 +101,7 @@ then we just proceed with normal evaluation.
 
 This comes straight from the rules of evaluation which states that when evaluating a combination, the operator and the operands must be evaluated first.  We simply follow that rule here, and since the thing appearing in the position of an operator is a combination, we proceed to evaluate it, which yields another operator.
 
-###Ex 1.5###
+###Ex 1.5
 
 ```scheme
 (define (p) (p))
@@ -119,11 +119,11 @@ In **applicative order** evaluation, the expression would never terminate.  The 
 
 In **normal order** evaluation, this is not a problem because operands are substituted first, and only evaluated when their value is actually needed for the computation to proceed.  However, in this case, the value of `y` (whose value is `(p)`) is never actually referenced in the body of the procedure because the predicate of the `if` evaluates to `#t` and the consequent is evaluated and the intepreter never has to evaluate the alternative.
 
-###Ex 1.6###
+###Ex 1.6
 
 The problem here is related to Ex 1.5.  The interpreter performs applicative order evaluation, so it evaluates the procedure's operands first.  This becomes an issue because the `else-clause` clause parameter in this case is a call to `sqrt-iter`.  The interpreter by design must evaluate this before moving on, and i doing so, ends up evaluating another call to `sqrt-iter`.  This will continue to happend forever because the interpreter will never actually enter the body of the procedure.
 
-###Ex 1.7###
+###Ex 1.7
 
 The problem for very small numbers is that the value of `0.001` in `good-enough?` is too large.  For values that are small enough, a difference of `0.001` between `(square guess)` and `x` could still be too far from the actual root.
 
@@ -156,7 +156,7 @@ The book suggests an alternative way to implement `good-enough?` by watching how
 
 This new version of `good-enough?` works better for both small and large values.  For small values, we avoid situations where we prematurely terminate because we now check how the guess changes between successive iterations, rather than stopping at some threshhold.  For large values, we avoid situations with infinite loops because when we can no longer improve the value (i.e. `improve` starts return the same value), we simply terminate because we see that the guess did not change.
 
-###Ex 1.8###
+###Ex 1.8
 
 ```scheme
 (define (improve-curt-guess guess x)

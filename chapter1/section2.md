@@ -164,7 +164,7 @@ $$
          &= \frac{\phi^k - \psi^k}{\sqrt{5}} + \frac{\phi^{k - 1} - \psi^{k - 1}}{\sqrt{5}} \\
          &= \frac{\phi^k + \phi^{k - 1} - \psi^k - \psi^{k - 1}}{\sqrt{5}} \\
          &= \frac{\phi^k + \phi^{k - 1} - (\psi^k + \psi^{k - 1})}{\sqrt{5}} \\
-         &= \frac{\phi^k(\phi + \phi^{-1}) - \psi^k(\psi + \psi^{-1})}{\sqrt{5}} \\
+         &= \frac{\phi^k(1 + \phi^{-1}) - \psi^k(1 + \psi^{-1})}{\sqrt{5}} \\
          &= \frac{\phi^k(\frac{\phi}{\phi} + \frac{1}{\phi}) - \psi^k(\frac{\psi}{\psi} + \frac{1}{\psi})}{\sqrt{5}} \\
          &= \frac{\phi^k(\frac{1+ \phi}{\phi}) - \psi^k(\frac{1+ \psi}{\psi})}{\sqrt{5}} \\
          &= \frac{\phi^k(\frac{\phi^2}{\phi}) - \psi^k(\frac{\psi^2}{\psi})}{\sqrt{5}} \\

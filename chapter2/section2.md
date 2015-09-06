@@ -581,7 +581,7 @@ I did implement `take` and `drop`, which both take a sequence and either returns
 Note, the version of `append` used here is the one provided by the implementation (Neil van Dyke's in my case), which takes an abitrarily number of lists, instead of just 2, as in the case for the one given as an example in the book.
 
 ###Ex 2.43
-*I initially thought it was $$O(n^2)$$ extra work, but looking around at others' solutions to this problem (such as Eli Bendersky's), I realized that I had forgotten about the recursive call to `queens-cols`.
+*I initially thought it was $$O(n^2)$$ extra work, but looking around at others' solutions to this problem (such as [Eli Bendersky's](http://eli.thegreenplace.net/)), I realized that I had forgotten about the recursive call to `queens-cols`.
 
 Here is the complete `queen-cols` procedure as Louis has it:
 

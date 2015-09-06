@@ -185,7 +185,7 @@ For the number of steps, `count-change` is \\(O(n^5)\\).  This can be seen most 
 
 It's also clear to see that `count-change` finds all the ways to combine each coin to equal the amount, which each step (leaf in the tree) corresponding to the use of one of the kinds of coins, so the number of steps would roughly be equal to
 
-$$ \frac{n}{50} * \frac{n}{25} * \frac{n}{10} * \frac{n}{5} * \frac{n}{1} $$
+$$ \frac{n}{50} \cdot \frac{n}{25} \cdot \frac{n}{10} \cdot \frac{n}{5} \cdot \frac{n}{1} $$
 
 which is clearly bounded above by \\(n^5\\).
 

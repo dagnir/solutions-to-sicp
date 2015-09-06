@@ -8,3 +8,4 @@
   * [Section 2](chapter2/section2.md)
   * [Section 3](chapter2/section3.md)
   * [Section 4](chapter2/section4.md)
+  * [Section 5](chapter2/section5.md)

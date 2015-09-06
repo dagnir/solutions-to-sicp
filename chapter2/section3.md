@@ -1,10 +1,3 @@
----
-layout: post
-title:  "SICP Chapter 2 Section 3"
-date:   2015-06-28 13:59:00
-categories: sicp sicp-chapter-2 section-3
----
-
 ###Ex 2.53
 
 ```scheme

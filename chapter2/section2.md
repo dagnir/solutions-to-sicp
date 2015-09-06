@@ -61,7 +61,7 @@ No, the order of the values in `coin-values` does not affect the answer produced
 
 The goal is to filter the elements of `nums` so that we keep only the ones that have same parity as `a`--that is, if `a` is even, we keep only the evens, and if it's odd, we keep only the `odd` ones.  To do this, we recursively build the resulting list, adding only elements that have the same parity.
 
-Note how this is written as a recursive procedure, rather than iterative.  This is done to preserve the order in which the elements in `nums` appear.  It would be possible to do it in an iterative manner as well, but that would not be as efficient because it requires appending each element to the end of the list.  We could also build the list backwards, then `reverse` at the end, but that's another \\(O(n)\\) operations we can avoid.
+Note how this is written as a recursive procedure, rather than iterative.  This is done to preserve the order in which the elements in `nums` appear.  It would be possible to do it in an iterative manner as well, but that would not be as efficient because it requires appending each element to the end of the list.  We could also build the list backwards, then `reverse` at the end, but that's another $$O(n)$$ operations we can avoid.
 
 ###Ex 2.21
 
@@ -303,7 +303,7 @@ Here is the complete procedure that generates all of the subsets:
 
 Here is how it works: the procedure generates all of the subsets by taking a list, (recursively) generating all of the subsets of the tail of the list, prepending the head of the list to all of the returned subsets, then appending the subsets of the the tail (without the head) to that list.
 
-Since all of those subsets were generated using a set that did not include the head, it is always safe to add it to all of the returned subsets.  Note also that for any set \\(A\\) which includes the element \\(a\\), there is a corresponding set \\(A'\\) that contains all of the elements of \\(A\\) except for \\(a\\) (precisely because at some point, we created \\(A\\) by adding \\(a\\) to \\(A'\\)). this guarantees that we have all of the subsets.
+Since all of those subsets were generated using a set that did not include the head, it is always safe to add it to all of the returned subsets.  Note also that for any set $$A$$ which includes the element $$a$$, there is a corresponding set $$A'$$ that contains all of the elements of $$A$$ except for $$a$$ (precisely because at some point, we created $$A$$ by adding $$a$$ to $$A'$$). this guarantees that we have all of the subsets.
 
 ###Ex 2.33
 
@@ -403,7 +403,7 @@ This works by plucking off the first element of each of the sequences into anoth
          m)))
 ```
 
-`matrix-*-vector` is pretty straightforward, the product of  matrix \\(m\\) and and vector \\(v\\) is simply a vector whose elements are the dot product of \\(v\\) an each row of the matrix \\(m\\).
+`matrix-*-vector` is pretty straightforward, the product of  matrix $$m$$ and and vector $$v$$ is simply a vector whose elements are the dot product of $$v$$ an each row of the matrix $$m$$.
 
 `transpose` is also surprisingly simple, we simply want to turn the columns into the rows, so we use `accumulate-n` to take the first elements of each sequence (which are the rows), and create a list from them, which becomes a row in the resulting matrix.
 
@@ -457,7 +457,7 @@ For example, `(fold-right + 0 (list 1 2 3))` and `(fold-left + 0 (list 1 2 3))` 
              sequence))
 ```
 
-The most natural one to use for this is `fold-left`, since by working our way from left to right, all we need to do is add the current element to the beginning of the list; it is also more efficient, since it does constant amount of work per element.  For the `fold-right` version, we begin at the right, so each element we encounter must be added to the *end* of the list, which requires work on the order of \\(O(n)\\) per `append`.
+The most natural one to use for this is `fold-left`, since by working our way from left to right, all we need to do is add the current element to the beginning of the list; it is also more efficient, since it does constant amount of work per element.  For the `fold-right` version, we begin at the right, so each element we encounter must be added to the *end* of the list, which requires work on the order of $$O(n)$$ per `append`.
 
 ###Ex 2.40
 
@@ -470,7 +470,7 @@ The most natural one to use for this is `fold-left`, since by working our way fr
    (enumerate-interval 1 (- n 1))))
 ```
 
-To do this, we map over all possible values of `j`, that is \\(1 \leq j<n\\), and in an inner mapping, enumerate `i` from between \\(j<i \leq n\\).  This avoids any duplication (i.e. permutations of equivalent pairs such as \\((1,2)\\) and \\((2,1)\\)) because for any value of \\(j\\), we only look at values of \\(i\\) strictly larger than it.
+To do this, we map over all possible values of `j`, that is $$1 \leq j<n$$, and in an inner mapping, enumerate `i` from between $$j<i \leq n$$.  This avoids any duplication (i.e. permutations of equivalent pairs such as $$(1,2)$$ and $$(2,1)$$) because for any value of $$j$$, we only look at values of $$i$$ strictly larger than it.
 
 ###Ex 2.41
 
@@ -574,14 +574,14 @@ The definition of `empty-board` is quite simple, and simply uses nested `map`s o
 
 My choice of how to represent the board made `safe?`, the trickiest one to implement (nicely), easier, since we can simply `drop` the columns we haven't looked at yet (everything beyond column `k`, which are towards the front of the list), and then simply iterate over the columns remaining, checking the diagonal, antidiagonal, and row during each iteration for a queen.
 
-`adjoin-position` is quite simple; it works by `take`ing the last \\(board-size - k\\) columns--i.e. all the columns to the right of `k`--appending to this list a new column with a queen placed in `new-row`, and finally appending all the other columns before `k`.  The auxilary procedure `place-queen` works in an analogous manner.
+`adjoin-position` is quite simple; it works by `take`ing the last $$board-size - k$$ columns--i.e. all the columns to the right of `k`--appending to this list a new column with a queen placed in `new-row`, and finally appending all the other columns before `k`.  The auxilary procedure `place-queen` works in an analogous manner.
 
 I did implement `take` and `drop`, which both take a sequence and either returns the first `n` items in the given sequence, or returns the sequence with the first `n` items removed, respectively.
 
 Note, the version of `append` used here is the one provided by the implementation (Neil van Dyke's in my case), which takes an abitrarily number of lists, instead of just 2, as in the case for the one given as an example in the book.
 
 ###Ex 2.43
-*I initially thought it was \\(O(n^2)\\) extra work, but looking around at others' solutions to this problem (such as Eli Bendersky's), I realized that I had forgotten about the recursive call to `queens-cols`.
+*I initially thought it was $$O(n^2)$$ extra work, but looking around at others' solutions to this problem (such as Eli Bendersky's), I realized that I had forgotten about the recursive call to `queens-cols`.
 
 Here is the complete `queen-cols` procedure as Louis has it:
 
@@ -599,11 +599,11 @@ Here is the complete `queen-cols` procedure as Louis has it:
         (enumerate-interval 1 board-size)))))
 		```
 
-The reason his version runs very slowly is because we incur exponential amount of extra unnecessary work.  The outer `flatmap` now maps over the rows, while the inner `map` maps over solutions found so far for the preceding columns.  This is terrible for the running time because for each new row that we want to check, we incur a call to `queen-cols` (!!), all of which are a waste (other than one) because it will return the same set of solutions each time.  Contrast this to the book's version where `queen-cols` is only called \\(n\\) times, once for each column.
+The reason his version runs very slowly is because we incur exponential amount of extra unnecessary work.  The outer `flatmap` now maps over the rows, while the inner `map` maps over solutions found so far for the preceding columns.  This is terrible for the running time because for each new row that we want to check, we incur a call to `queen-cols` (!!), all of which are a waste (other than one) because it will return the same set of solutions each time.  Contrast this to the book's version where `queen-cols` is only called $$n$$ times, once for each column.
 
-Each call to `queen-cols` for column \\(k\\), results in \\(n\\) more calls, this time for column \\(k - 1\\).  The call tree basically looks like a tree with branching factor \\(n\\), and height \\(n\\), so we end up with an exponential number of calls, instead of a linear number.
+Each call to `queen-cols` for column $$k$$, results in $$n$$ more calls, this time for column $$k - 1$$.  The call tree basically looks like a tree with branching factor $$n$$, and height $$n$$, so we end up with an exponential number of calls, instead of a linear number.
 
-In conclusion, if the book's version solves the puzzle in time \\(T\\), then Louis version solves it in \\(T*n^n\\) time, \\(n^n\\) times slower.
+In conclusion, if the book's version solves the puzzle in time $$T$$, then Louis version solves it in $$T*n^n$$ time, $$n^n$$ times slower.
 
 ###Ex 2.44
 

@@ -603,7 +603,7 @@ The reason his version runs very slowly is because we incur exponential amount o
 
 Each call to `queen-cols` for column $$k$$, results in $$n$$ more calls, this time for column $$k - 1$$.  The call tree basically looks like a tree with branching factor $$n$$, and height $$n$$, so we end up with an exponential number of calls, instead of a linear number.
 
-In conclusion, if the book's version solves the puzzle in time $$T$$, then Louis version solves it in $$T*n^n$$ time, $$n^n$$ times slower.
+In conclusion, if the book's version solves the puzzle in time $$T$$, then Louis version solves it in $$T \cdot n^n$$ time, $$n^n$$ times slower.
 
 ###Ex 2.44
 

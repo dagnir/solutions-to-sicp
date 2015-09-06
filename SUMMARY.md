@@ -6,3 +6,4 @@
   * [Section 3](chapter1/section3.md)
 * Chapter 2
   * [Section 2](chapter2/section2.md)
+  * [Section 3](chapter2/section3.md)

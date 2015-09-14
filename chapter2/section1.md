@@ -87,7 +87,7 @@ We define the selectors for the four points:
   (cdr (cdr r)))
 ```
 
-Finally, we can define `width-rect` and `height-rect` in terms of the above procedure:
+Finally, we can define `width-rect` and `height-rect` in terms of the above procedures:
 
 ```scheme
 (define (height-rect r)

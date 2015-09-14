@@ -1,5 +1,5 @@
 ###Ex 2.1
-```
+```scheme
 (define (make-rat n d)
   (let ((g (gcd n d)))
     (if (< (/ n d) 0)
@@ -10,7 +10,8 @@
 We check if `n` divided by `d` is negative.  If it is, then by convention, we give `n` the negative sign, and take the absolute value of `d`.  Note that in this case we take the absolute value of `n` before negating it in case it's already negative.  If the result is postive, then again, we take the absolute value of each in case they're both negative.
 
 ###Ex 2.2
-```
+
+```scheme
 (define (make-segment a b)
   (cons a b))
 
@@ -50,7 +51,7 @@ To ensure that our `perimeter` procedure will work with any representation w cho
 
 At this point, this is all we need to find the perimeter and area of the rectangle `<r>`:
 
-```
+```scheme
 (define (perimeter-rect r)
   (+ (* 2 (width-rect2 r))
      (* 2 (height-rect2 r))))
@@ -65,14 +66,14 @@ Since the definitions above make no assumptions about the representation fo the 
 
 Here is one way, representing a rectangle $$ABCD$$ as four points:
 
-```
+```scheme
 (define (make-rect a b c d)
   (cons (cons a b) (cons c d)))
 ```
 
 We define the selectors for the four points:
 
-```
+```scheme
 (define (a-rect r)
   (car (car r)))
 
@@ -88,7 +89,7 @@ We define the selectors for the four points:
 
 Finally, we can define `width-rect` and `height-rect` in terms of the above procedure:
 
-```
+```scheme
 (define (height-rect r)
   (let ((d (d-rect r))
 	(a (a-rect r)))
@@ -104,14 +105,14 @@ Finally, we can define `width-rect` and `height-rect` in terms of the above proc
 
 An alternative representation is to represent the rectangle as a point (its bottom left corner) and the two numbers to represent its width and height:
 
-```
+```scheme
 (define (make-rect o w h)
   (cons o (make-point w h)))
 ```
 
 then `width-rect` and `height-rect` are very straightforward:
 
-```
+```scheme
 (define (height-rect r)
   (cdr (cdr r)))
 

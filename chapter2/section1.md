@@ -198,12 +198,15 @@ For two intervals $$x$$ and $$y$$ and their difference $$x-y$$, there are a few 
 
 For intervals $$a$$ and $$b$$, their difference is
 
+$$
 \begin{equation}
 a - b = [a_l - b_h, a_h - b_l]
 \end{equation}
+$$
 
 The width of $$a-b$$ is
 
+$$
 \begin{equation}
   \begin{aligned}
     \frac{(a_h - b_l) - (a_l - b_h)}{2} &= \frac{a_h - b_l - a_l + b_h}{2} \\
@@ -211,18 +214,21 @@ The width of $$a-b$$ is
     &= \frac{a_h - a_l}{2} + \frac{b_h - b_l}{2} \\
     \end{aligned}
 \end{equation}
-
+$$
 
  The two quantities being added are just the widths of $$a$$ and $$b$$ respectively, so the width of the difference $$a-b$$ is just the sum of the widths of the two terms.
 
  The same can be shown for the sum:
 
+ $$
  \begin{equation}
    a + b = [a_l + b_l, a_h + b_h]
  \end{equation}
+ $$
 
 whose width is equal to
 
+$$
 \begin{equation}
   \begin{aligned}
     \frac{(a_h + b_h) - (a_l + b_l)}{2} &= \frac{a_h + b_h - a_l - b_l}{2} \\
@@ -230,6 +236,7 @@ whose width is equal to
     &= \frac{a_h - a_l}{2} + \frac{b_h - b_l}{2} \\
   \end{aligned}
 \end{equation}
+$$
 
 Again, we see that it's just the sum of the widths of the individual terms.
 

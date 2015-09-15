@@ -298,7 +298,7 @@ $$
     T(c) &= \frac{W(c)}{C(c)} \\
     &= \frac{a_hb_h - a_lb_l}{2} \cdot \frac{2}{a_lb_l - a_hb_h} \\
     &= \frac{a_hb_h - a_lb_l}{a_lb_l - a_hb_h} \\
-  \begin{aligned}
+  \end{aligned}
 \end{equation}
 $$
 

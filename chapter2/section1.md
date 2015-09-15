@@ -241,3 +241,78 @@ $$
 Again, we see that it's just the sum of the widths of the individual terms.
 
 We can show that this is not true for multiplication (and by extension, division).  Let $$a=[0,2]$$ and $$b=[0,2]$$.  The product $$a \cdot b$$ product is the interval $$[0,4]$$, which might lead us to believe that it's simply the sum of double their widths, but if we keep $$a$$ the same and let $$b=[1,3]$$, $$a \cdot b = [0,6]$$.  This is because the result of multiplying two intervals is found by finding the $$min$$ and $$max$$ of the four different ways to multiply the upper and lower bounds, which is directly affected by the value of the upper/lower bounds and not simply just the width of each interval.
+
+###Ex 2.10
+
+```scheme
+(define (div-interval x y)
+  (if (= 0 (width-interval y))
+      (error "Division by interval spanning 0 -- DIV-INTERVAL")
+      (mul-interval x
+		    (make-interval (/ 1.0 (upper-bound y))
+				   (/ 1.0 (lower-bound y))))))
+```
+
+###Ex 2.11
+
+```scheme
+(define (mul-interval a b)
+  (let ((al (lower-bound a))
+	(ah (upper-bound a))
+	(bl (lower-bound b))
+	(bh (upper-bound b)))
+    (cond ((and (<= al 0) (>= ah 0) (<= bl 0) (>= bh 0)) (make-interval (min (* al bh) (* ah bl)) (max (* al bl) (* ah bh))))
+	  ((and (> al 0) (> ah 0) (>= bl 0) (> bh 0)) (make-interval (* al bl) (* ah bh)))
+	  ((and (>= al 0) (> ah 0) (< bl 0) (<= bh 0)) (make-interval (* ah bl) (* al bh)))
+	  ((and (> al 0) (> ah 0) (< bl 0) (> bh 0)) (make-interval (* ah bl) (* ah bh)))
+	  ((and (< al 0) (> ah 0) (> bl 0) (> bh 0)) (make-interval (* al bh) (* ah bh)))
+	  ((and (< al 0) (> ah 0) (< bl 0) (< bh 0)) (make-interval (* ah bl) (* al bl)))
+	  ((and (< al 0) (<= ah 0) (>= bl 0) (> bh 0)) (make-interval (* al bh) (* ah bl)))
+	  ((and (< al 0) (<= ah 0) (< bl 0) (<= bh 0)) (make-interval (* ah bh) (* al bl)))
+	  (else (make-interval (* al bh) (* al bl))))))
+```
+
+This was a little tricky, but I'm pretty sure I got all the cases right...
+
+###Ex 2.12
+
+```scheme
+(define (make-center-percent c t)
+  (make-interval (- c (* c t)) (+ c (* c t))))
+
+(define (percent i)
+  (* 1.0 (/ (width i) (center i))))
+```
+
+###Ex 2.13
+
+By playing around with some values, I noticed that the tolerance of the product can be approximated by the sum of the tolerances of each factor.
+
+By assuming that both $$a$$ and $$b$$ are positive, we know that the product $$c = a \cdot b = [a_l \cdot b_l, a_h \cdot b_h]$$.
+
+The exact tolerance of this interval is then
+
+$$
+\begin{equation}
+  \begin{aligned}
+    T(c) &= \frac{W(c)}{C(c)} \\
+    &= \frac{a_hb_h - a_lb_l}{2} \cdot \frac{2}{a_lb_l - a_hb_h} \\
+    &= \frac{a_hb_h - a_lb_l}{a_lb_l - a_hb_h} \\
+  \begin{aligned}
+\end{equation}
+$$
+
+The sum of each factor's tolerance is:
+
+$$
+\begin{equation}
+  \begin{aligned}
+    T(a) + T(b) &= \frac{W(a)}{C(a)} + \frac{W(b)}{C(b)} \\
+    &= \frac{a_h - a_l}{a_l + a_h} + \frac{b_h - b_l}{b_l + b_h} \\
+    &= \frac{2a_hb_h - 2a_lb_l}{a_lb_l + a_lb_h + a_hb_l + a_hb_h} \\
+    &\approx \frac{(2(a_hb_h - a_lb_l)}{2(a_lb_l - a_hb_h)} \\
+  \end{aligned}
+\end{equation}
+$$
+
+The last line works because we assume that the tolerances are very small, meaning that $$a_l \approx a_h$$, so we can substitute accordingly.

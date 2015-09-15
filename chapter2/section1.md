@@ -316,3 +316,15 @@ $$
 $$
 
 The last line works because we assume that the tolerances are very small, meaning that $$a_l \approx a_h$$, so we can substitute accordingly.
+
+###Ex 2.15
+Yes, Eva is right: `par2` produces a result that has a lower percent.  This can be seen when comparing `(percent (par1 a b))` and `(percent (par2 a b))`, where
+
+```scheme
+(define a (make-center-percent 3 0.1))
+(define b (make-center-percent 4 0.05))
+```
+In particular, `par2` will produce an interval with tighter percentagep tolerance.  The reason this happens is because each time we perform an operation with intervals with width > 0, they will affect final result's percentage tolerance. In `par1`, we see that there are three operations in total that affect the resulting tolerance: $$R1 \cdot R2$$, $$R1 + R2$$, and the division of the results of those two operations.  In conrast, `par2` only results in *one* operation involving two intervals with width > 0: $$\frac{1}{R1} + \frac{1}{R2}$$.  Intuitively, we can think of it this way: It does not make sense for an operation involving two intervals a and b to result in an interval with *tighter* bounds than the terms used to compute it.
+
+###Ex 2.16
+This answer is related to the one given for 2.15.  In general, the reason that different algebraic expressions, although equivalent, can lead to different results is because each operation involving two intervals carried out directly (i.e. no simplication) increases the percentage tolerance.  For example, `(a + b) - b` is equivalent to just `a`, but computing the first expression directly will result in an interval that has a width greater than `a`'s, despite having the same center, which means it also has a higher percentage.

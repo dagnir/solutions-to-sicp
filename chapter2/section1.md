@@ -205,10 +205,10 @@ a - b = [a_l - b_h, a_h - b_l]
 The width of $$a-b$$ is
 
 \begin{equation}
-  \end{aligned}
+  \begin{aligned}
     \frac{(a_h - b_l) - (a_l - b_h)}{2} &= \frac{a_h - b_l - a_l + b_h}{2} \\
     &= \frac{a_h - a_l + b_h - b_l}{2} \\
-    &= \frac{a_h - a_l}{2} + \frac{b_h - b_l}{2}
+    &= \frac{a_h - a_l}{2} + \frac{b_h - b_l}{2} \\
     \end{aligned}
 \end{equation}
 
@@ -227,7 +227,7 @@ whose width is equal to
   \begin{aligned}
     \frac{(a_h + b_h) - (a_l + b_l)}{2} &= \frac{a_h + b_h - a_l - b_l}{2} \\
     &= \frac{a_h - a_l + b_h - b_l}{2} \\
-    &= \frac{a_h - a_l}{2} + \frac{b_h - b_l}{2}
+    &= \frac{a_h - a_l}{2} + \frac{b_h - b_l}{2} \\
   \end{aligned}
 \end{equation}
 

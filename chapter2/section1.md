@@ -310,7 +310,7 @@ $$
     T(a) + T(b) &= \frac{W(a)}{C(a)} + \frac{W(b)}{C(b)} \\
     &= \frac{a_h - a_l}{a_l + a_h} + \frac{b_h - b_l}{b_l + b_h} \\
     &= \frac{2a_hb_h - 2a_lb_l}{a_lb_l + a_lb_h + a_hb_l + a_hb_h} \\
-    &\approx \frac{(2(a_hb_h - a_lb_l)}{2(a_lb_l - a_hb_h)} \\
+    &\approx \frac{2(a_hb_h - a_lb_l)}{2(a_lb_l + a_hb_h)} \\
   \end{aligned}
 \end{equation}
 $$

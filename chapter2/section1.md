@@ -317,6 +317,25 @@ $$
 
 The last line works because we assume that the tolerances are very small, meaning that $$a_l \approx a_h$$, so we can substitute accordingly.
 
+###Ex 2.14
+
+```scheme
+(define a (make-center-percent 2 0.05))
+(define b (make-center-percent 3 0.03))
+(define c a)
+
+(percent (div-interval a a))
+=> 0.09975062344139651
+
+(percent (div-interval a b))
+=> 0.07988017973040436
+
+(percent (div-interval a c))
+=> 0.09975062344139651
+```
+
+I think this illustrates the problem properly.  We know from the previous exercise that for intervals with very small tolerances, the percentage of the product of quotient of two intervals is very close to the sum of their tolerances.  This can be shown from $$\frac{A}{B}$$.  However for $$\frac{A}{A}$$, the percent is $$\approx 0.1$$, twice the percent of `a`.  However, $$\frac{A}{A}$$ can simply be reduced to 1 mathematically with percent 0.  A related problem is the third application, $$\frac{A}{C}$$, where $$C=A$$.  Even though the names of the values are different here, they are equal, and so we sould expect the result to be 1 also.
+
 ###Ex 2.15
 Yes, Eva is right: `par2` produces a result that has a lower percent.  This can be seen when comparing `(percent (par1 a b))` and `(percent (par2 a b))`, where
 

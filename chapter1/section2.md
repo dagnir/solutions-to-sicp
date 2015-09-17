@@ -236,42 +236,81 @@ Again, the trick here is to maintain the invariant which is $$c + ab$$.  The sol
 
 After first transformation:
 
-$$ a' = bq + aq + ap $$
-$$ b' = bp + aq $$
+$$
+\begin{equation}
+  \begin{aligned}
+    a' &= bq + aq + ap \\
+    b' &= bp + aq \\
+  \end{aligned}
+\end{equation}
+$$
 
 and after second transformation:
 
-$$ a'' = (bp + aq)q + (bq + aq + ap)q + (bq + aq + ap) p $$
-$$ b'' = (bp + aq)p + (bq + aq + ap)q $$
+$$
+\begin{equation}
+  \begin{aligned}
+    a'' &= (bp + aq)q + (bq + aq + ap)q + (bq + aq + ap) p \\
+    b'' &= (bp + aq)p + (bq + aq + ap)q \\
+  \end{aligned}
+\end{aligned}
+$$
 
 Now, it's a matter of gathering and simplifying terms so that $$a''$$ is in the form
 
-$$ bq' + aq' + ap' $$
+$$
+\begin{equation}
+  bq' + aq' + ap'
+\end{equation}
+$$
 
 and likewise, $$b''$$ looks like
 
-$$ bp' + aq' $$
+$$
+\begin{equation}
+  bp' + aq'
+\end{equation}
+$$
 
 Since $$b''$$ only has one of each term, we'll start with it first:
 
-$$ b'' = bp^2 + apq + bq^2 + aq^2 + apq $$
+$$
+\begin{equation}
+  b'' = bp^2 + apq + bq^2 + aq^2 + apq
+\end{equation}
+$$
 
 By rearranging terms, we get:
 
-$$ b '' = b(p^2 + q^2) + a(q^2 + 2pq) $$
+$$
+\begin{equation}
+  b'' = b(p^2 + q^2) + a(q^2 + 2pq)
+\end{equation}
+$$
 
 Doing the same thing for $$a''$$, we see that we can do the same thing:
 
-$$ a'' = (bp + aq)q + (bq + aq + ap)q + (bq + aq + ap) p $$
-$$     = bpq + aq^2 + bq^2 + aq^2 + apq + bpq + apq + ap^2 $$
-$$     = bq^2 + bpq + bpq + aq^2 + apq + apq + aq^2 + ap^2 $$
-$$     = b(q^2 + 2pq) + a(q^2 + 2pq) + a(q^2 + p^2) $$
+$$
+\begin{equation}
+  \begin{aligned}
+    a'' &= (bp + aq)q + (bq + aq + ap)q + (bq + aq + ap) p \\
+        &= bpq + aq^2 + bq^2 + aq^2 + apq + bpq + apq + ap^2 \\
+        &= bq^2 + bpq + bpq + aq^2 + apq + apq + aq^2 + ap^2 \\
+        &= b(q^2 + 2pq) + a(q^2 + 2pq) + a(q^2 + p^2) \\
+  \end{aligned}
+\end{equation}
+$$
 
 We can now see that
 
-$$ p' = p^2 + q^2 $$
-
-$$ q' = q^2 + 2pq $$
+$$
+\begin{equation}
+  \begin{aligned}
+    p' &= p^2 + q^2 \\
+    q' &= q^2 + 2pq \\
+  \end{aligned}
+\end{equation}
+$$
 
 Now we can fill in the missing parts of the code:
 

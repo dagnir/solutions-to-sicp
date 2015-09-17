@@ -364,3 +364,33 @@ So now there are about $$2n-1$$ nodes in the tree, so it's bounded by $$\Theta(n
 ###Ex 1.27
 
 Using the six Carmichael numbers provided, `fast-prime?` returns `#t` for each of them, so it really does look like they fool the Fermat Test.
+
+###Ex 1.28
+
+```scheme
+(define (m-r-expmod a exp m)
+  (define (sq-step r)
+    (define sq (remainder (square r)
+                           m))
+    ;; check for non-trivial square root
+    ;; non trivial if it's not equal to 1 or m - 1 and
+    ;; r^2 mod m = 1 mod m
+    (if (and (not (= r 1))
+             (not (= r (- m 1)))
+             (= sq 1))
+        0
+        sq))
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (sq-step (m-r-expmod a (/ exp 2) m)))
+        (else (remainder (* a (m-r-expmod a (- exp 1) m))
+                 m))))
+
+(define (m-r-test n)
+  (define (try-it a)
+    (= (m-r-expmod a (- n 1) n)
+       1))
+  (try-it (+ 1 (random (- n 1)))))
+```
+
+We take the suggestion from the book and modify `expmod`.  We know that we've found a trivial square root of the number `a` if, when we `square` the result from a recursive call to `m-r-expmod`, the result is not equal to $$1$$ or $$m-1$$, and $$r^2 \mod m \equiv 1 \equiv \mod m$$.

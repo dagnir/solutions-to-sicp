@@ -393,4 +393,4 @@ Using the six Carmichael numbers provided, `fast-prime?` returns `#t` for each o
   (try-it (+ 1 (random (- n 1)))))
 ```
 
-We take the suggestion from the book and modify `expmod`.  We know that we've found a trivial square root of the number `a` if, when we `square` the result from a recursive call to `m-r-expmod`, the result is not equal to $$1$$ or $$m-1$$, and $$r^2 \mod m \equiv 1 \equiv \mod m$$.
+We take the suggestion from the book and modify `expmod`.  We know that we've found a trivial square root of the number `a` if, when we `square` the result from a recursive call to `m-r-expmod`, the result is not equal to $$1$$ or $$m-1$$, and $$r^2 \mod m \equiv 1 \mod m$$.

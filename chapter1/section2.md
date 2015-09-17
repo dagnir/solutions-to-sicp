@@ -253,7 +253,7 @@ $$
     a'' &= (bp + aq)q + (bq + aq + ap)q + (bq + aq + ap) p \\
     b'' &= (bp + aq)p + (bq + aq + ap)q \\
   \end{aligned}
-\end{aligned}
+\end{equation}
 $$
 
 Now, it's a matter of gathering and simplifying terms so that $$a''$$ is in the form

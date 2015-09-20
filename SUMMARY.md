@@ -12,3 +12,4 @@
   * [Section 5](chapter2/section5.md)
 * Chapter 3
   * [Section 1](chapter3/section1.md)
+  * [Section 2](chapter3/section2.md)

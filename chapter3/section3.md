@@ -175,8 +175,6 @@ The interpreter prints two "b"'s so he assumes that there are two of them in the
 
 ###Ex 3.22
 ```scheme
-#lang planet neil/sicp
-
 (define (make-queue)
   (let ((front-ptr '())
         (rear-ptr '()))

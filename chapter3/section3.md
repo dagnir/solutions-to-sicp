@@ -19,7 +19,7 @@ Here is the corresponding box-and-pointer diagram:
 ###Ex 3.14
 Here is the code for `mystery`:
 
-{% highlight scheme %}
+```scheme
 (define (mystery l)
   (define (loop x y)
     (if (null? x)
@@ -28,7 +28,7 @@ Here is the code for `mystery`:
           (set-cdr! x y)
           (loop temp x))))
   (loop l '()))
-{% endhighlight %}
+```
 
 So that's it's not so confusing, I've renamed the `x` bound by `mystery` to `l`.  This doesn't affect the program at all because in the original version, `loop`'s `x` shadows it.  After careful studying of the code, we can see that it reverses the list `l`.
 
@@ -39,7 +39,7 @@ For the following expressions:
 {%highlight scheme %}
 (define v (list 'a 'b 'c 'd))
 (define w (mystery v))
-{% endhighlight %}
+```
 
 Determining what evaluating `v` would print is a little tricky.  For `v`, we get `(a)`.  This is because on the very first iteration of `loop` within `mystery`, `x` points to the same list `v` does, and it sets its `cdr` to `y`.  At this point, `y` is `'()`.  As for `w`, it's just the reverse of the original list.
 
@@ -64,11 +64,11 @@ The reason that `count-pairs` is not correct is because it doesn't account for t
 
 However, `count-pairs` would tell us that something for something like
 
-{% highlight scheme %}
+```scheme
 (define z (cons 1 2))
 (define z2 (cons z z))
 (define z3 (cons z2 '()))
-{% endhighlight %}
+```
 
 There are 4 pairs.  The reason is that the `car` and `cdr` of `z2` both point to `z`.  This causes `count-pairs` to to count `z` twice, once when it follows the `car` of `z2`, and another when it follows the `cdr`, counting the pair `z2`, it thinks `z2` consists of 3 pairs, and `z3` provides the fourth.
 
@@ -81,7 +81,7 @@ To cause `count-pairs` to never return at all, we can simply give it a list with
 
 Here's a solution that works:
 
-{% highlight scheme %}
+```scheme
 (define (count-pairs x)
   (define seen '())
   (define (recur x)
@@ -95,7 +95,7 @@ Here's a solution that works:
                      (recur (car x))
                      (recur (cdr x)))))))
   (recur x))
-{% endhighlight %}
+```
 
 Note how the structure is very similar to Ben's.  For my solution however, we define an inner `recur` procedure.  The important addition here is the `seen` list, which is defined within `count-pairs`.  Everytime `recur` encounters a pair it hasn't seen it, it adds it to the list, then recurses on its `car` and `cdr`.  If `recur` is given something that isn't a pair, or one that it's already seen, it returns 0.  This is a basically a graph search.
 
@@ -103,7 +103,7 @@ Note how the structure is very similar to Ben's.  For my solution however, we de
 
 The solution is identical to the solution for 3.17.  We keep a list of nodes in the list that we've already seen, and if we come upon a node that is in that list, then we report a cycle.
 
-{% highlight scheme %}
+```scheme
 (define (contains-cycle? l)
   (define (iter seen x)
     (cond ((and (not (null? seen))
@@ -112,7 +112,7 @@ The solution is identical to the solution for 3.17.  We keep a list of nodes in 
           ((null? x) #f)
           (else (iter (cons x seen) (cdr x)))))
   (iter '() l))
-{% endhighlight %}
+```
 
 ###Ex 3.19
 
@@ -120,7 +120,7 @@ One solution to this problem is called the ["Tortoise and the Hare Algorithm"](h
 
 With this is mind, here is the code:
 
-{% highlight scheme %}
+```scheme
 (define (contains-cycle? l)
   (define (move x n)
     (cond ((= n 0) x)
@@ -131,7 +131,7 @@ With this is mind, here is the code:
           ((eq? t h) #t)
           (else (iter (move t 1) (move h 2)))))
   (iter l (move l 2)))
-{% endhighlight %}
+```
 
 ###Ex 3.20
 
@@ -147,18 +147,18 @@ A similar thing happens for `(define z (cons x x))`.  However, this time, within
 
 What's tripping Ben up are the last three expressions and their results:
 
-{% highlight scheme %}
+```scheme
 (insert-queue! q1 'b)
 => ((a b) b)
 (delete-queue! q1)
 => ((b) b)
 (delete-queue! q1)
 => (() b)
-{% endhighlight %}
+```
 
 The interpreter prints two "b"'s so he assumes that there are two of them in the queue.  What Eva essentially tells him is that the interpreter knows nothing about how interpret our custom data structure.  It only knows how to print the contents of a `cons` cell.  Our "queue" is a single pair, whos `car` points to the head of a list, and `cdr` ponts to the last pair of the same list.  That is why the first expression prints out `((a b) b)`.  The contents of the list are `(a b)`, so when we it display `q1`, the result of the interpreter printing the `car` is the entire list, and when it prints the `cdr`, it's just `b`. When we've deleted both everything from the list, we get the odd result `(() b)` because the rear pointer is never modified, it's still pointing to the last pair in the list, whereas the front pointer now points to `'()`, telling us that the queue is empty.  Knowing all this, the proper way to print the queue would be to actually just follow the front pointer:
 
-{% highlight scheme %}
+```scheme
 (define (print-queue q)
   (define (iter x)
     (if (not (null? x))
@@ -171,10 +171,10 @@ The interpreter prints two "b"'s so he assumes that there are two of them in the
   (iter (front-ptr q))
   (display ")")
   (newline))
-{% endhighlight %}
+```
 
 ###Ex 3.22
-{% highlight scheme %}
+```scheme
 #lang planet neil/sicp
 
 (define (make-queue)
@@ -219,7 +219,7 @@ The interpreter prints two "b"'s so he assumes that there are two of them in the
             ((eq? m 'delete-queue!) delete-queue!)
             (else (error "Unknown message -- QUEUE" m))))
     dispatch))
-{% endhighlight %}
+```
 
 Overrall, it's very much like the book's solution.  Because `front-ptr` and `rear-ptr` are no longer halves of a pair, we don't need to use things like `set-car!` and `set-cdr!`.
 
@@ -229,7 +229,7 @@ For efficient deletions from the rear of the queue, we need a way to access the 
 
 Each item in the dequeue will be in a *node* made of up two pairs, set up to so that its `car` is the value for stored in that node, and its `cdr` is another pair, where the this pair's `car` points to the node that is before it, and the pairs `cdr` is after it.
 
-{% highlight scheme %}
+```scheme
 (define (make-node x)
   (cons x (cons '() '())))
 (define (right-ptr node)
@@ -240,7 +240,7 @@ Each item in the dequeue will be in a *node* made of up two pairs, set up to so 
   (set-cdr! (cdr node) p))
 (define (set-left-ptr! node p)
   (set-car! (cdr node) p))
-{% endhighlight %}
+```
 
 Adding a new node to the list is a little trickier because each node now has two pointers, but it's not much more complicated.  Insertions at the rear of the deque means that the right pointer of the current last node of the deque needs to point to the new node, and the new node's left pointer now points to the current rear node.  Finally, the `rear-ptr` of the deque is made to point to this new node.
 
@@ -254,11 +254,11 @@ Adding a new node to the list is a little trickier because each node now has two
            (set-right-ptr! rear-ptr new-node)
            (set-left-ptr! new-node rear-ptr)
            (set! rear-ptr new-node)))))
-{% endhighlight %}
+```
 
 Insertions at the front are basically the same thing, except for which pointers are set to what:
 
-{% highlight scheme %}
+```scheme
 (define (front-insert-deque! x)
   (let ((new-node (make-node x)))
     (cond ((empty-deque?)
@@ -268,11 +268,11 @@ Insertions at the front are basically the same thing, except for which pointers 
            (set-right-ptr! new-node front-ptr)
            (set-left-ptr! front-ptr new-node)
            (set! front-ptr new-node)))))
-{% endhighlight %}
+```
 
 Here is the complete listing:
 
-{% highlight scheme %}
+```scheme
 (define (make-deque)
   (let ((front-ptr '())
         (rear-ptr '()))
@@ -349,13 +349,13 @@ Here is the complete listing:
             ((eq? m 'print-deque) print-deque)
             (else (error "Unknown message -- DEQUE" m))))
     dispatch))
-{% endhighlight %}
+```
 
 ###Ex 3.24
 
 Here is the full listing:
 
-{% highlight scheme %}
+```scheme
 (define (make-table same-key?)
   (let ((local-table (list '*table*)))
     (define (assoc key records)
@@ -393,7 +393,7 @@ Here is the full listing:
             ((eq? m 'insert-proc!) insert!)
             (else (error "Unknown operation -- TABLE" m))))
     dispatch))
-{% endhighlight %}
+```
 
 
 
@@ -402,7 +402,7 @@ An important thing to realize is that "subtables" and "records" are really the s
 
 To support arbitrary amount of keys for lookup is pretty easy.  All we do is treat the first key in the list as the key for a subtable, and then recurse on the subtable with the remaining keys.
 
-{% highlight scheme %}
+```scheme
 (define (lookup keys)
   (define (iter k rec)
     (if (null? k)
@@ -412,13 +412,13 @@ To support arbitrary amount of keys for lookup is pretty easy.  All we do is tre
               (iter (cdr k) rec2)
               false))))
   (iter keys local-table))
-{% endhighlight %}
+```
 
 Once we reach the end of the list, we return the `cdr` of the current subtable as the value.
 
 For `insert!`, we maintain the invariant that `keys` in `iter` represents the keys into the current subtable `st` to insert the given `value`.  We iterate over all the keys in the list.  In a given iteration, we lookup the record in the `st` associated with the head of the `keys` list.  There are two cases here of course, that it already exists, or it doesnt.  If it already exists, we have to check if the key that was just looked up is the last one.  If it is, then the record we got will have `value` associated with it.  If there are more keys remaining, then we iterate over the list, using the record as the current subtable.  The case where no record was found for the current key is very similar, but we first create the new empty record and add it to the current subtable.
 
-{% highlight scheme %}
+```scheme
 (define (insert! keys value)
   (define (iter keys st)
     (if (not (null? keys))
@@ -436,7 +436,7 @@ For `insert!`, we maintain the invariant that `keys` in `iter` represents the ke
                     (iter (cdr keys) new-rec)))))))
   (iter keys local-table)
   'ok)
-{% endhighlight %}
+```
 
 
 ###Ex 3.26
@@ -461,7 +461,7 @@ The first thing that happens is `E3` is set up with an entry for `x`, the formal
 No, this would not work if we had done `(memoize fib)`.  Taking a look at the definition of `memoize`, if it doesn't already have a value for the `x`, it will call `(fib x)` to find the value before caching it.  That means that for this to work, the procedure `fib` must also be memoized.
 ###Ex 3.28
 
-{% highlight scheme %}
+```scheme
 (define (or-gate o1 o2 output)
   (define (or-action-procedure)
     (let ((new-value
@@ -480,7 +480,7 @@ No, this would not work if we had done `(memoize fib)`.  Taking a look at the de
           1
           0)
       (error "Invalid signals" (list s1 s2))))
-{% endhighlight %}
+```
 
 It's very similar to `and-gate` indeed, and the only change is that we use `logical-or` to determine the new value of the output signal.
 
@@ -492,7 +492,7 @@ In terms of delay, it takes one `inverter-delay` to negate the two input signals
 
 Here is the code listing:
 
-{% highlight scheme %}
+```scheme
 (define (or-gate-compound o1 o2 output)
   (let ((not-o1 (make-wire)) (not-o2 (make-wire)) (and-out (make-wire)))
     (inverter o1 not-o1)
@@ -500,13 +500,13 @@ Here is the code listing:
     (and-gate not-o1 not-o2 and-out)
     (inverter and-out output)
     'ok))
-{% endhighlight %}
+```
 
 
 ###Ex 3.30
 The code to do this is surprisingly simple.  The basis of course is when there are no more signal wires left so we just return `'ok`.  If there are more input signals, then we create a new wire to carry the carry signal from the full adder, then wire up the next two input signals and the carry signal from the previous adder into a new full adder, and giving it the next wire from `sk` as the sum of the two signals, and `new-carry` as the carry out from the current full-adder.  Then we recurse on the tail of all the lists, passing `new-carry` along as the input carry for the next full-adder.
 
-{% highlight scheme %}
+```scheme
 (define (ripple-carry-adder ak bk sk c)
   (if (null? ak)
       'ok
@@ -520,7 +520,7 @@ The code to do this is surprisingly simple.  The basis of course is when there a
                             (cdr bk)
                             (cdr sk)
                             new-carry))))
-{% endhighlight %}
+```
 
 A full-adder consists of two half-adders and an or-gate.  Referring to figure 3.26, the signals from wires \\(B\\) and \\(C_{in}\\) go through the first half-adder, incurring one half-adder's worth of delay, then the sum of these two signals and \\(A\\) go through the second half-adder, incurring another delay, then finally the carry signals from the two half-adders go through or-gate.  So for a full-adder, we have two half-adder delays plus an or-gate delay.
 
@@ -533,14 +533,14 @@ We call the action procedure immediately once it's added to the wire because it 
 
 Let's see what happens if we change the `accept-action-procedure!` as the book suggests:
 
-{% highlight scheme %}
+```scheme
 define (accept-action-procedure! proc)
   (set! action-procedures (cons proc action-procedures)))
-{% endhighlight %}
+```
 
 Now applying the same procedures as the _sample simulation_:
 
-{% highlight scheme %}
+```scheme
 (define input-1 (make-wire))
 (define input-2 (make-wire))
 (define sum (make-wire))
@@ -549,19 +549,19 @@ Now applying the same procedures as the _sample simulation_:
 ; no output...
 (probe 'carry carry)
 ; no output...
-{% endhighlight %}
+```
 
 The difference here is that when we attach either probe, we don't get any output; since the output is a result of the wire calling the action procedure, we will only see it if and when the signal on the wire changes.
 
 On the next set of applications:
-{% highlight scheme %}
+```scheme
 (half-adder input-1 input-2 sum carry)
 ok
 (set-signal! input-1 1)
 done
 (propagate)
 done
-{% endhighlight %}
+```
 
 When we attach the half-adder to the input and output wires, again its action procedure is not called.  However, we immediately set the signal of `input-1` to 1, and since it was previously 0, it in turn calls all of the action procedures it has.  No probes are attached to this wire though, so we don't see any output.  Also, since this is a signal flip, the wire will call all of the action procedures it has.
 
@@ -569,13 +569,13 @@ Note also that we don't see anything after calling `propagate`.  Why?  because a
 
 Then finally we have:
 
-{% highlight scheme %}
+```scheme
 (set-signal! input-2 1)
 done
 (propagate)
 carry 11  New-value = 1
 done
-{% endhighlight %}
+```
 
 Again, this is a signal flip on `input-2`, which means it will call its action procedures allowing the signal to `propagate`. Notice again, that the probe on the `sum` wire is not triggered, since once we set the signal in `input-2` to 1, then `sum` is of course 0, but this is not a change in signal to its previous state, so again, the action procedures are not called.
 

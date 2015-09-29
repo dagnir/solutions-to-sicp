@@ -116,7 +116,7 @@ The solution is identical to the solution for 3.17.  We keep a list of nodes in 
 
 ###Ex 3.19
 
-One solution to this problem is called the ["Tortoise and the Hare Algorithm"](https://en.wikipedia.org/wiki/Cycle_detection#Tortoise_and_hare).  The idea is simple, we have two pointers to the data, `t` and `h`.  `t` always advances one place each iteration, and `h` advances two positions, so that if `t` is at position \\(i\\), then `h` is at position \\(2i\\).  If there's a cycle in the list, then at some point, `t` and `h` will be on top of each other.
+One solution to this problem is called the ["Tortoise and the Hare Algorithm"](https://en.wikipedia.org/wiki/Cycle_detection#Tortoise_and_hare).  The idea is simple, we have two pointers to the data, `t` and `h`.  `t` always advances one place each iteration, and `h` advances two positions, so that if `t` is at position $$i$$, then `h` is at position $$2i$$.  If there's a cycle in the list, then at some point, `t` and `h` will be on top of each other.
 
 With this is mind, here is the code:
 
@@ -225,7 +225,7 @@ Overrall, it's very much like the book's solution.  Because `front-ptr` and `rea
 
 
 ###Ex 3.23
-For efficient deletions from the rear of the queue, we need a way to access the second-to-last element in \\(O(1)\\) time; to achieve this, we need is a *doubly-linked list*.
+For efficient deletions from the rear of the queue, we need a way to access the second-to-last element in $$O(1)$$ time; to achieve this, we need is a *doubly-linked list*.
 
 Each item in the dequeue will be in a *node* made of up two pairs, set up to so that its `car` is the value for stored in that node, and its `cdr` is another pair, where the this pair's `car` points to the node that is before it, and the pairs `cdr` is after it.
 
@@ -456,7 +456,7 @@ Now, let's see what happens when we evaluate `(memo-fib 3)`.  The diagram is not
 
 The first thing that happens is `E3` is set up with an entry for `x`, the formal parameter of `memo-fib`.  Then `E4` gets set up to find the previously computed value for $$x=3$$.  We don't find one, so yet another environment, `E5` is set up to compute the result (by evaluating `(f 3)`).  This evaluation happens within `E6`.  The evaluation of `(f 3)` results in two recursive calls to `memo-fib`, so we set up `E7`.  The story is the same for `E8` and `E9` as `E4` and `E5` respectively, but this time $$x=2$$.  Then we keep going in a similar fashion, computing $$x=1$$, and $$x=0$$.  Of course at the end of the each computation of `f`, the result is added to `table`, but this isn't shown.
 
-`memo-fib` computes the \\(n\\)th Fibonacci number in linear time because it only depends on the the value of \\(n - 1\\) and \\(n - 2\\).  However, because we're using memoization, these values are already computed and stored in the table.  Also, because of the the way `insert!` works, the last two computed values are always the first two entries in the table, so lookup happens in constant time.
+`memo-fib` computes the $$n$$th Fibonacci number in linear time because it only depends on the the value of $$n - 1$$ and $$n - 2$$.  However, because we're using memoization, these values are already computed and stored in the table.  Also, because of the the way `insert!` works, the last two computed values are always the first two entries in the table, so lookup happens in constant time.
 
 No, this would not work if we had done `(memoize fib)`.  Taking a look at the definition of `memoize`, if it doesn't already have a value for the `x`, it will call `(fib x)` to find the value before caching it.  That means that for this to work, the procedure `fib` must also be memoized.
 ###Ex 3.28
@@ -486,7 +486,7 @@ It's very similar to `and-gate` indeed, and the only change is that we use `logi
 
 ###Ex 3.29
 
-We can define an `or-gate` in terms of `and-gates` and `inverters` because \\(A \land B \equiv \neg (\neg A \land \neg B)\\).  This also clues us in on how many function boxes of each type we need and how to hook them up: We need to negate the two input signals using two inverters, then use the inverted signals as inputs to an `and-gate`, then finally invert the output of of the `and-gate`.
+We can define an `or-gate` in terms of `and-gates` and `inverters` because $$A \land B \equiv \neg (\neg A \land \neg B)$$.  This also clues us in on how many function boxes of each type we need and how to hook them up: We need to negate the two input signals using two inverters, then use the inverted signals as inputs to an `and-gate`, then finally invert the output of of the `and-gate`.
 
 In terms of delay, it takes one `inverter-delay` to negate the two input signals, then one `and-delay` to then AND them together, then finally one more `inverter-delay` to invert the output of the `and-gate`.
 
@@ -522,11 +522,11 @@ The code to do this is surprisingly simple.  The basis of course is when there a
                             new-carry))))
 ```
 
-A full-adder consists of two half-adders and an or-gate.  Referring to figure 3.26, the signals from wires \\(B\\) and \\(C_{in}\\) go through the first half-adder, incurring one half-adder's worth of delay, then the sum of these two signals and \\(A\\) go through the second half-adder, incurring another delay, then finally the carry signals from the two half-adders go through or-gate.  So for a full-adder, we have two half-adder delays plus an or-gate delay.
+A full-adder consists of two half-adders and an or-gate.  Referring to figure 3.26, the signals from wires $$B$$ and $$C_{in}$$ go through the first half-adder, incurring one half-adder's worth of delay, then the sum of these two signals and $$A$$ go through the second half-adder, incurring another delay, then finally the carry signals from the two half-adders go through or-gate.  So for a full-adder, we have two half-adder delays plus an or-gate delay.
 
-Now referring to figure 3.25, we see that the signals \\(A\\) and \\(B\\) going into it go through an or-gate and and-gate in parallel, then the output of the and-gate goes through an inverter, the signals on \\(D\\) and \\(E\\) go through a second or-gate.  In the half-adder, the first and-gate and the inverter are in series, so there's a delay of an and-gate and inverter there.  Then, happening in parallel is the or-gate.  Then finally, the two signals, one from the inverter and the othet from the or-gate go through the second and-gate.  Assumming that the delay of and and-gates and an inverter are longer than a single or-gate, then the total delay of a half-adder is two and-gate delays plus an inverter delay.
+Now referring to figure 3.25, we see that the signals $$A$$ and $$B$$ going into it go through an or-gate and and-gate in parallel, then the output of the and-gate goes through an inverter, the signals on $$D$$ and $$E$$ go through a second or-gate.  In the half-adder, the first and-gate and the inverter are in series, so there's a delay of an and-gate and inverter there.  Then, happening in parallel is the or-gate.  Then finally, the two signals, one from the inverter and the othet from the or-gate go through the second and-gate.  Assumming that the delay of and and-gates and an inverter are longer than a single or-gate, then the total delay of a half-adder is two and-gate delays plus an inverter delay.
 
-The ripple-adder essentially consists of \\(k\\) full-adders in series, so the total delay is \\(k \cdot D_{FA} = k \cdot (2 \cdot D_{HA} + D_{OR}) = k \cdot (2 \cdot (2 \cdot D_{AND} + D_{INVERTER}) + D_{OR}))\\), where \\(D\\) is the delay of a component.
+The ripple-adder essentially consists of $$k$$ full-adders in series, so the total delay is $$k \cdot D_{FA} = k \cdot (2 \cdot D_{HA} + D_{OR}) = k \cdot (2 \cdot (2 \cdot D_{AND} + D_{INVERTER}) + D_{OR}))$$, where $$D$$ is the delay of a component.
 
 ###Ex 3.31
 We call the action procedure immediately once it's added to the wire because it ensures that all components in the simulation are in a consistent state.  By calling the action procedure right away, we ensure that any effects the current state of the wire is at the time of addition is reflected within the whole simulation immediately.  If we did not do this, the simulation would not be consistent until the wire's signal changes.  Worse, if the wire's signal never changes, the simulation would be completely inaccurate because the action procedures are never called.

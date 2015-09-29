@@ -36,7 +36,7 @@ Here is how the reversal is done:  for `loop`, the parameter `x` is the remainin
 
 For the following expressions:
 
-{%highlight scheme %}
+```scheme
 (define v (list 'a 'b 'c 'd))
 (define w (mystery v))
 ```

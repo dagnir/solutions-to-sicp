@@ -13,3 +13,4 @@
 * Chapter 3
   * [Section 1](chapter3/section1.md)
   * [Section 2](chapter3/section2.md)
+  * [Section 2](chapter3/section3.md)

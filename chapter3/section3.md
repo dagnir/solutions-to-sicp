@@ -244,7 +244,7 @@ Each item in the dequeue will be in a *node* made of up two pairs, set up to so 
 
 Adding a new node to the list is a little trickier because each node now has two pointers, but it's not much more complicated.  Insertions at the rear of the deque means that the right pointer of the current last node of the deque needs to point to the new node, and the new node's left pointer now points to the current rear node.  Finally, the `rear-ptr` of the deque is made to point to this new node.
 
-{% higlight scheme %}
+```scheme
 (define (rear-insert-deque! x)
   (let ((new-node (make-node x)))
     (cond ((empty-deque?)

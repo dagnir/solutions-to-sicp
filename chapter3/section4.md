@@ -327,7 +327,7 @@ Consider two concurrent database transactions $$T_{1}$$ and $$T_{2}$$.  Each
 transaction is identical: they query a single row, say $$R_a$$ for the first
 transaction, and $$R_b$$ for the second, update one of their columns, then,
 based on some factors, determines the set of rows related to the one just
-updated, and proceeds to updat them.  Let's assume that each row is distinct.
+updated, and proceeds to update them.  Let's assume that each row is distinct.
 However, when it comes to updating the related rows for $$R_a$$, it turns out
 that one of them is $$R_b$$, and likewise, the set of related rows for $$R_b$$
 includes $$R_a$$, and since updating the row will recquire locking it, this

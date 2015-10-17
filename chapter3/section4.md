@@ -43,9 +43,9 @@ is that both loads will always result in the same value, since it's no longer
 possible for $$P_2$$'s `set!` to happen between the two loads. In the end, the
 only possible value eliminated is $$110$$, the other four are still possible:
 
-* $$101$$: $$P_1$$ sets `x` to $$100$$, then $P_2$$ increments to 101
+* $$101$$: $$P_1$$ sets `x` to $$100$$, then $$P_2$$ increments to 101
 * $$121$$: $$P_2$$ increments `x` to $$11$$ and then $$P_1$$ sets `x` to `x` times `x`
-* $$11$$: $$P_2$$ accesses `x`, then $P_1$$ sets `x` to $$100$$, then $$P_2$$ sets `x`.
+* $$11$$: $$P_2$$ accesses `x`, then $$P_1$$ sets `x` to $$100$$, then $$P_2$$ sets `x`.
 
   Many people seem to think this one isn't possible, but I disagree.  It's
   possible for $$P_2$$'s load to happen immediately after $$P_1$$'s loads,

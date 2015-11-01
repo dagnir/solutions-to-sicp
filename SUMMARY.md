@@ -15,3 +15,4 @@
   * [Section 2](chapter3/section2.md)
   * [Section 3](chapter3/section3.md)
   * [Section 4](chapter3/section4.md)
+  * [Section 5](chapter3/section5.md)

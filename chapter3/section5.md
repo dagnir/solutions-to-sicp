@@ -227,4 +227,4 @@ If `delay` were implemented without `memo-proc`, then the access of the $$n$$
 and $$n-1$$ are no longer $$O(1)$$ because the value must be recomputed on each
 access.  Computing the $$n^{\textrm{th}}$$ now requires computing the $$n$$ and
 $$n-1$$ element, so in effect, the recursion tree now has a branching factor of
-$$2$$ and depth $$n$$ so that the number of operations is $$\approx 2^n$$.
+$$2$$ and depth $$n$$ so that the number of operations is $$\approx O(2^n)$$.

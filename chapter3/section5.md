@@ -146,3 +146,85 @@ elements of `seq` will no longer be the triangular numbers.  Basically, each
 time an element from either `y` or `z` is computed, an element from `seq` must
 be computed, requiring a call to `accum` and thus changing the value of `sum`,
 and also what we see as the head of `seq`.
+
+###Ex 3.53
+
+I'll repeat the code given in the book:
+
+```scheme
+(define s (cons-stream 1 (add-streams s s)))
+```
+
+We can see that `s` is a stream that starts with $$1$$, and the rest of the
+elements are the result of adding `s` to itself, effectively doubling it, so
+just like the `doubles` stream given as an example in the book, elements of `s`
+are powers of two.  This can be verified by evaluating the line, and then using
+`display-stream` or `stream-ref`.
+
+
+###Ex 3.54
+
+Here is the definition of `mul-streams`:
+
+```scheme
+(define (mul-streams s1 s2)
+  (stream-map * s1 s2))
+```
+
+The book asks us to use `mul-stream` and the `integers` stream to complete the
+definition of `factorials`.  To generate the next element in the sequence, we
+need to the current element, and multiply it by the next integer in the
+sequence of integers, which gives us the following defintion:
+
+```scheme
+(define factorials (cons-stream 1 (mul-streams factorials integers))
+```
+
+So factorials is defined as the stream starting with `1` with the rest being
+computed by multipling the $$n^{\textrm{th}}$$ `factorial` with the
+corresponding $$n^{\textrm{th}}$$ integer.
+
+###Ex 3.55
+
+```scheme
+(define partial-sums (cons-stream 1 (add-streams partial-sums (stream-cdr integers))))
+```
+
+This is very similar to the fibonacci solution in Exercise 3.54.  We define
+`partial-sums` as the stream starting with `1`, and the rest of the stream
+computed by adding the `partial-sums` stream with the `cdr` of the `integers`
+stream. Again, this works because when it comes time to compute the `cdr` of
+the `partial-sums` stream, we have just enough information computed (i.e. the
+current partial sum is at the head of the stream) to cmpute the next element.
+
+###Ex 3.56
+
+For this problem, we end up with three streams because `S` must be scaled by
+$$2$$,$$3$$,and $$5$$, so we first merge the the streams produced by scaling
+`S` by $$2$$ and $$3$$, and then merge that stream with the stream produced by
+scaling `S` by $$5$$:
+
+```scheme
+(define S (cons-stream 1 (merge (merge (scale-stream S 2) (scale-stream S 3)) (scale-stream S 5))))
+```
+
+###Ex 3.57
+Here is the definition of `fibs` repeated:
+
+```scheme
+(define fibs
+  (cons-stream 0
+               (cons-stream 1
+                            (add-streams (stream-cdr fibs) fibs))))
+```
+
+The number of addition operations is $$O(n)$$ for the definition of `fibs`
+based on `add-streams` because to compute the $$n+1$$ element in the stream we
+need only have the $$n$$ and $$n-1$$ element, both of wich are available and
+memoized for us so that accessing them is only an $$O(1)$$ operation.
+
+If `delay` were implemented without `memo-proc`, then the access of the $$n$$
+and $$n-1$$ are no longer $$O(1)$$ because the value must be recomputed on each
+access.  Computing the $$n^{\textrm{th}}$$ now requires computing the $$n$$ and
+$$n-1$$ element, so in effect, the recursion tree now has a branching factor of
+$$2$$ and depth $$n$$ so that the number of operations is $$\approx 2^n$$.

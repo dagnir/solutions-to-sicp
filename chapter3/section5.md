@@ -228,3 +228,102 @@ and $$n-1$$ are no longer $$O(1)$$ because the value must be recomputed on each
 access.  Computing the $$n^{\textrm{th}}$$ now requires computing the $$n$$ and
 $$n-1$$ element, so in effect, the recursion tree now has a branching factor of
 $$2$$ and depth $$n$$ so that the number of operations is $$\approx O(2^n)$$.
+
+###Ex 3.58
+
+```scheme
+(define (expand num den radix)
+  (cons-stream
+   (quotient (* num radix) den)
+   (expand (remainder (* num radix) den) den radix)))
+```
+
+After inspection, we can see that this actually provides radix expansion of the
+given rational number, $$\frac{\textrm{num}}{\textrm{den}}$$.  We can see this
+by thinking carefully about the structure of th stream: the first element is
+the quotient of `num` and `den` (multiplied by `radix`), and the rest of the
+stream is the expansion of the remainder over `den` (multiplied by `radix`).
+
+So, `(expand 1 7 10)` gives the *decimal* expansion of $$\frac{1}{7}$$, and
+`(expand 3 8 10)` gives the decimal expansion of $$\frac{3}{8}$$.
+
+$$\frac{1}{7}$$ repeats so the elements of the stream `(expand 1 7 10)`
+consists of infinitely many sequences of $$1,4,2,8,5,7$$, whereas
+$$\frac{3}{8}$$ does not, and the stream consists of $$3,7,5$$, followed by
+zeroes.
+
+###Ex 3.59
+First, here is the definition of `integrate-series`:
+
+```scheme
+(define (integrate-series s)
+  (define (recur d s)
+    (if (stream-null? s)
+        s
+        (cons-stream (* (/ 1 d) (stream-car s))
+                     (recur (+ d 1) (stream-cdr s)))))
+  (recur 1 s))
+```
+
+We simply construct the stream recursively, multiplying each element by the
+appropriate coefficient.
+
+Here are `cosine-series` and `sine-series`:
+```scheme
+(define cosine-series (cons-stream 1 (integrate-series (scale-stream sine-series -1))))
+
+(define sine-series (cons-stream 0 (integrate-series cosine-series)))
+```
+
+like the mathematical definition given in the book, the definitions of the
+streams refer to each other.  Interestingly, this works because there is always
+enough data already computed for either stream to compute the next element in
+each stream.  It's certainly a little mind bending to thinking in depth about!
+
+###Ex 3.60
+
+To multiply two series $$A$$ and $$B$$, we simply take the first element in
+$$A$$, (call it $$A_0$$), and scale $$B$$ by $$A_0$$, and add to this the
+result of multiplying the rest of $$A$$ with $$B$$.
+
+```scheme
+(define (mul-series s1 s2)
+  (cons-stream (* (stream-car s1)
+                  (stream-car s2))
+               (add-streams (scale-stream (stream-cdr s2) (stream-car s1))
+                            (mul-series (stream-cdr s1) s2))))
+```
+
+Then, checking our work:
+
+```scheme
+(define cos-sq-series (mul-series cosine-series cosine-series))
+(define sin-sq-series (mul-series sine-series sine-series))
+(define cos-sq-plus-sin-sq (add-streams cos-sq-series sin-sq-series))
+```
+
+Inspecting the elements of `cos-sq-plus-sin-sq`, it's $$1$$ followed by $$0$$
+it looks like we've got it correct.  Of course we can also check the elements
+of `cos-sq-series` and `sin-sq-series` and compare them against the Taylor
+expansions coefficients.
+
+###Ex 3.61
+
+We can more or less translate the definition direcly for `invert-unit-series`:
+
+```scheme
+(define (invert-unit-series s)
+  (cons-stream 1 (mul-series (invert-unit-series s)
+                             (scale-stream (stream-cdr s) -1))))
+```
+
+_Note_: We are computing the *multiplicative*inverse of the series, so if we
+have
+
+```scheme
+(define x (invert-unit-series cosine-series))
+```
+
+`x` is the series expansion of $$\sec$$ and NOT $$\arccos$$.  I missed this
+when I initially did the problem because I was comparing the values in the
+stream to those in the series expansion of $$\arccos$$ rather than $$\sec$$.

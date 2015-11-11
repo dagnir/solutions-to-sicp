@@ -278,7 +278,7 @@ Here are `cosine-series` and `sine-series`:
 like the mathematical definition given in the book, the definitions of the
 streams refer to each other.  Interestingly, this works because there is always
 enough data already computed for either stream to compute the next element in
-each stream.  It's certainly a little mind bending to thinking in depth about!
+each stream.  It's certainly a little mind bending to think in depth about!
 
 ###Ex 3.60
 
@@ -317,7 +317,7 @@ We can more or less translate the definition direcly for `invert-unit-series`:
                              (scale-stream (stream-cdr s) -1))))
 ```
 
-_Note_: We are computing the *multiplicative*inverse of the series, so if we
+_Note_: We are computing the *multiplicative* inverse of the series, so if we
 have
 
 ```scheme

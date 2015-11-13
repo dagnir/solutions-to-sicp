@@ -327,3 +327,22 @@ have
 `x` is the series expansion of $$\sec$$ and NOT $$\arccos$$.  I missed this
 when I initially did the problem because I was comparing the values in the
 stream to those in the series expansion of $$\arccos$$ rather than $$\sec$$.
+
+###Ex 3.62
+
+As the problem suggests, we already have all the pieces we need from the
+previous exercises.  To implmenet division, we multiply the numerator series
+with the inverse of the denominator series:
+
+```scheme
+(define (div-series n d)
+  (if (= (stream-car d) 0)
+      (error "Division by ZERO -- DIV-SERIES")
+      (mul-series n (invert-unit-series d))))
+```
+
+$$\tan x = \frac{\sin x}{\cos x}$$, so we define `tan-series` as:
+
+```scheme
+(define tan-series (div-series sine-series cosine-series))
+```

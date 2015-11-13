@@ -346,3 +346,24 @@ $$\tan x = \frac{\sin x}{\cos x}$$, so we define `tan-series` as:
 ```scheme
 (define tan-series (div-series sine-series cosine-series))
 ```
+
+###Ex 3.63
+
+Here is Louis' version:
+
+```scheme
+(define (sqrt-stream x)
+  (cons-stream 1.0
+               (stream-map (lambda (guess)
+                             (sqrt-improve guess x))
+                           (sqrt-stream x))))
+```
+
+We can see that the reason this is less efficient is that instead of defining
+the stream recursively by `cons`ing it onto itself, the `cons` of the stream is
+instead a completely new stream.  Since each each element is computed by
+`force`ing the `cons` of the stream, and the `cons` of the stream will always
+be a delayed computation that we haven't seen before, we effectively get no
+memoization.  This means that this version would be identical to the first
+version if `delay` were implemented as a simple `lambda` without the
+optimization from `memo-proc`.

@@ -371,6 +371,19 @@ memoization.  This means that this version would be identical to the first
 version if `delay` were implemented as a simple `lambda` without the
 optimization from `memo-proc`.
 
+###Ex 3.64
+
+```scheme
+(define (stream-limit s t)
+  (let ((e1 (stream-car s))
+        (e2 (stream-car (stream-cdr s))))
+    (if (< (abs (- e1 e2)) t)
+        e2
+        (stream-limit (stream-cdr s) t))))
+```
+
+No surprises for this solution, a simple iterative process does the trick.
+
 ###Ex 3.65
 
 First, we define the summands of the $$\ln 2$$ stream:
@@ -403,4 +416,4 @@ Finally, we can do even better bo using `make-tableau`:
 
 ```scheme
 (define ln2-stream-3 (accelerated-sequence euler-transform ln2-stream-1))
-```
+``i

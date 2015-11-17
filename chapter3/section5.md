@@ -403,17 +403,17 @@ using `partial-sums`:
 (define ln2-stream-1 (partial-sums ln2-series))
 ```
 
-Again, the downside to this methough is that can take a while for it to get
+Again, the downside to this method is that it can take a while for it to get
 accurate enough.
 
-Next, we can use `euler-transform` to be better approximations faster:
+Next, we can use `euler-transform` to get better approximations faster:
 
 ```scheme
 (define ln2-stream-2 (euler-transform ln2-stream-1))
 ```
 
-Finally, we can do even better bo using `make-tableau`:
+Finally, we can do even better by using `make-tableau`:
 
 ```scheme
 (define ln2-stream-3 (accelerated-sequence euler-transform ln2-stream-1))
-``i
+```

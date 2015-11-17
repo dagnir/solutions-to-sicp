@@ -370,3 +370,37 @@ be a delayed computation that we haven't seen before, we effectively get no
 memoization.  This means that this version would be identical to the first
 version if `delay` were implemented as a simple `lambda` without the
 optimization from `memo-proc`.
+
+###Ex 3.65
+
+First, we define the summands of the $$\ln 2$$ stream:
+
+```scheme
+(define (ln2-summands n)
+  (cons-stream (/ 1.0 n)
+               (stream-map - (ln2-summands (+ n 1)))))
+
+(define ln2-series (ln2-summands 1))
+```
+
+Just like for $$\pi$$, we can simply get successively better approximations by
+using `partial-sums`:
+
+```scheme
+(define ln2-stream-1 (partial-sums ln2-series))
+```
+
+Again, the downside to this methough is that can take a while for it to get
+accurate enough.
+
+Next, we can use `euler-transform` to be better approximations faster:
+
+```scheme
+(define ln2-stream-2 (euler-transform ln2-stream-1))
+```
+
+Finally, we can do even better bo using `make-tableau`:
+
+```scheme
+(define ln2-stream-3 (accelerated-sequence euler-transform ln2-stream-1))
+```

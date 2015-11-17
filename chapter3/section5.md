@@ -187,15 +187,18 @@ corresponding $$n^{\textrm{th}}$$ integer.
 ###Ex 3.55
 
 ```scheme
-(define partial-sums (cons-stream 1 (add-streams partial-sums (stream-cdr integers))))
+(define (partial-sums s)
+  (define sums (cons-stream (stream-car s) (add-streams sums (stream-cdr s))))
+  sums)
 ```
 
 This is very similar to the fibonacci solution in Exercise 3.54.  We define
-`partial-sums` as the stream starting with `1`, and the rest of the stream
-computed by adding the `partial-sums` stream with the `cdr` of the `integers`
-stream. Again, this works because when it comes time to compute the `cdr` of
-the `partial-sums` stream, we have just enough information computed (i.e. the
-current partial sum is at the head of the stream) to cmpute the next element.
+`partial-sums` as the stream starting with the first element in the stream `s`,
+and the rest of the stream computed by adding the `partial-sums` stream with
+the `cdr` of the `s` stream. Again, this works because when it comes time to
+compute the `cdr` of the `partial-sums` stream, we have just enough information
+computed (i.e. the current partial sum is at the head of the stream) to cmpute
+the next element.
 
 ###Ex 3.56
 

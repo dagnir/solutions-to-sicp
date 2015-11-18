@@ -412,8 +412,9 @@ Next, we can use `euler-transform` to get better approximations faster:
 (define ln2-stream-2 (euler-transform ln2-stream-1))
 ```
 
-Finally, we can do even better by using `make-tableau`:
+Finally, we can do even better bo using `accelerated-sequence`:
 
 ```scheme
 (define ln2-stream-3 (accelerated-sequence euler-transform ln2-stream-1))
 ```
+

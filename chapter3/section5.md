@@ -475,3 +475,43 @@ However, what's really wrong with this is that `interleave` is *not* like
 this is a problem because the second argument is the recursive call to `pairs`,
 and since a stream like `integers` is infinite, the recursion will never
 terminate.
+
+###Ex 3.69
+
+```scheme
+(define (triples s t u)
+  (let ((a (stream-car s))
+        (b (stream-car t))
+        (c (stream-car u)))
+    (cons-stream
+     (list a b c)
+     (interleave
+      (stream-map (lambda (x) (list a b x))
+                  (stream-cdr u))
+      (interleave
+       (stream-map (lambda (x) (cons a x))
+                   (pairs (stream-cdr t) (stream-cdr u)))
+       (triples (stream-cdr s) (stream-cdr t) (stream-cdr u)))))))
+```
+
+Here I have an interleaving of three streams.  The first element in the stream
+consists of the heads of the three streams, $$(S_0, T_0, U_0)$$.  Next, we have
+the stream consisting of elements of the form $$(S_0, T_0, U_n)$$, where
+$$n>0$$.  For the second stream, we need the elements $$T_i$$ and $$U_j$$ such
+that they are greater than $$S_0$$ and $$T_i \leq U_j$$, which is exactly what
+`pairs` will give us.  Finally, the third stream is the recursive call to
+`triples`.
+
+Having defined `triples`, `pythagorean-triples` becomes a filtering of the
+stream:
+
+```scheme
+(define pythagorean-triples
+  (stream-filter
+   (lambda (t)
+     (let ((i (car t))
+           (j (cadr t))
+           (k (caddr t)))
+       (= (+ (* i i) (* j j)) (* k k))))
+   (triples integers integers integers)))
+```

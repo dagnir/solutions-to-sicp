@@ -418,3 +418,60 @@ Finally, we can do even better bo using `accelerated-sequence`:
 (define ln2-stream-3 (accelerated-sequence euler-transform ln2-stream-1))
 ```
 
+###Ex 3.67
+
+Here is the table that the book  presents that contains all the elements of the
+`pairs` stream:
+
+| | | | | |
+|-|-|-|-|-|
+|(S0, T0)|(S0, T1)|(S0, T2)|...
+|(S1, T0)|(S1, T1)|(S1, T2)|...
+|(S2, T0)|(S2, T1)|(S2, T2)|...
+|(S3, T0)|(S3, T1)|(S3, T2)|...
+
+For the original version of `pairs`, we excluded all the elements in the first
+column, that is, the elements $$(S_1, T_0), (S_2, T_0), (S_3, T_0)$$, and so
+on.  To get all pairs of integers, we need to add this extra stream:
+
+```scheme
+(define (pairs-all s t)
+  (cons-stream
+   (list (stream-car s) (stream-car t))
+   (interleave
+    (stream-map (lambda (x) (list (stream-car s) x))
+                (stream-cdr t))
+    (interleave
+     (stream-map (lambda (x) (list x (stream-car t)))
+                 (stream-cdr s))
+     (pairs-all (stream-cdr s) (stream-cdr t))))))
+```
+
+Here we make use of two applications of `interleave`: In the innermost
+application, we interleave the rest of the first column with the recursive call
+to `pairs-all`. Then we interleave the resulting stream with the the rest of
+the first-row.
+
+###Ex 3.68
+
+No this doesn't work.  Trying to run Louis' version will result in an infinite
+loop.
+
+Here is Louis' version:
+
+```scheme
+(define (pairs s t)
+  (interleave
+   (stream-map (lambda (x) (list (stream-car s) x))
+               t)
+   (pairs (stream-cdr s)
+          (stream-cdr t))))
+```
+
+It seems resonable because it technically does what we want, which is
+interleave the first row pairs with elements from the rest of the rows.
+However, what's really wrong with this is that `interleave` is *not* like
+`cons-stream`.  That is, its arguments will be evaluated right away.  Of course
+this is a problem because the second argument is the recursive call to `pairs`,
+and since a stream like `integers` is infinite, the recursion will never
+terminate.

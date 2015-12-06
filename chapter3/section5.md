@@ -515,3 +515,54 @@ stream:
        (= (+ (* i i) (* j j)) (* k k))))
    (triples integers integers integers)))
 ```
+
+###Ex 3.70
+
+```scheme
+(define (merge-weighted s1 s2 weight)
+  (cond ((stream-null? s1) s2)
+        ((stream-null? s2) s1)
+        (else
+         (let ((s1car (stream-car s1))
+               (s2car (stream-car s2)))
+           (cond ((< (weight s1car) (weight s2car))
+                  (cons-stream s1car (merge-weighted (stream-cdr s1) s2 weight)))
+                 ((> (weight s1car) (weight s2car))
+                  (cons-stream s2car (merge-weighted s1 (stream-cdr s2) weight)))
+                 (else (cons-stream s1car (merge-weighted (stream-cdr s1) (stream-cdr s2) weight))))))))
+```
+
+For `merge-weighted`, it's a small modification to the original.  Instead of
+comparing the elements directly, we compare the values after applying `weight`
+to them.
+
+```scheme
+(define (pairs-weighted s t weight)
+  (cons-stream
+   (list (stream-car s) (stream-car t))
+   (merge-weighted
+    (stream-map (lambda (x) (list (stream-car s) x))
+                (stream-cdr t))
+    (pairs-weighted (stream-cdr s) (stream-cdr t) weight)
+    weight)))
+```
+
+Here we replace `interleave` with `merge-weighted`.
+
+
+Finally, we define the two streams as described in the book
+
+```scheme
+(define s1 (pairs-weighted integers integers (lambda (p) (+ (car p) (cadr p)))))
+(define s2 (stream-filter (lambda (p)
+                            (let ((i (car p))
+                                  (j (cadr p)))
+                              (not (or (= (remainder i 2) 0) (= (remainder j 2) 0)
+                                       (= (remainder i 3) 0) (= (remainder j 3) 0)
+                                       (= (remainder i 5) 0) (= (remainder j 5) 0)))))
+                          (pairs-weighted integers integers
+                                          (lambda (p)
+                                            (let ((i (car p))
+                                                  (j (cadr p)))
+                                              (+ (* 2 i) (* 3 j) (* 5 i j)))))))
+```

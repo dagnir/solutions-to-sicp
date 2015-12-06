@@ -549,7 +549,6 @@ to them.
 
 Here we replace `interleave` with `merge-weighted`.
 
-
 Finally, we define the two streams as described in the book
 
 ```scheme

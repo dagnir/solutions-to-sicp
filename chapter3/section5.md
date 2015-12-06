@@ -557,9 +557,9 @@ Finally, we define the two streams as described in the book
 (define s2 (stream-filter (lambda (p)
                             (let ((i (car p))
                                   (j (cadr p)))
-                              (not (or (= (remainder i 2) 0) (= (remainder j 2) 0)
-                                       (= (remainder i 3) 0) (= (remainder j 3) 0)
-                                       (= (remainder i 5) 0) (= (remainder j 5) 0)))))
+                              (not (or (= (remainder (* i j) 2) 0)
+                                       (= (remainder (* i j) 3) 0)
+                                       (= (remainder (* i j) 5) 0)))))
                           (pairs-weighted integers integers
                                           (lambda (p)
                                             (let ((i (car p))

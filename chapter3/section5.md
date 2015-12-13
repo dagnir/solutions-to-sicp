@@ -525,7 +525,7 @@ stream:
         (else
          (let ((s1car (stream-car s1))
                (s2car (stream-car s2)))
-           (cond ((< (weight s1car) (weight s2car))
+           (cond ((<= (weight s1car) (weight s2car))
                   (cons-stream s1car (merge-weighted (stream-cdr s1) s2 weight)))
                  ((> (weight s1car) (weight s2car))
                   (cons-stream s2car (merge-weighted s1 (stream-cdr s2) weight)))
@@ -534,7 +534,8 @@ stream:
 
 For `merge-weighted`, it's a small modification to the original.  Instead of
 comparing the elements directly, we compare the values after applying `weight`
-to them.
+to them.  Also for equal weight pairs, we don't get rid of one of them as in
+the original `merge`, instead they both make it into the stream.
 
 ```scheme
 (define (pairs-weighted s t weight)
@@ -548,6 +549,7 @@ to them.
 ```
 
 Here we replace `interleave` with `merge-weighted`.
+
 
 Finally, we define the two streams as described in the book
 
@@ -565,3 +567,4 @@ Finally, we define the two streams as described in the book
                                                   (j (cadr p)))
                                               (+ (* 2 i) (* 3 j) (* 5 i j)))))))
 ```
+

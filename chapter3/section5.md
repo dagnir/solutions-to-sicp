@@ -624,3 +624,14 @@ and the three different pairs.
 
 The diagram was very helpful for this exercise and just involved a direct
 translation to code.
+
+###Ex 3.74
+
+```scheme
+(define zero-crossings
+  (stream-map sign-change-detector sense-data (stream-cdr sense-data)))
+```
+
+`sign-change-character` expects two consecutive elements in the stream, and we
+can do this by making the second stream for `stream-map` the `stream-cdr` of
+`sense-data`.

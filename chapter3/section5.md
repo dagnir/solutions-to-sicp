@@ -571,22 +571,23 @@ Finally, we define the two streams as described in the book
 ###Ex 3.71
 
 ```scheme
+(define (w1 p)
+  (let ((i (car p))
+        (j (cadr p)))
+    (+ (* i i i) (* j j j))))
+
 (define (rn)
-  (define s (pairs-weighted integers integers (lambda (p)
-                                               (let ((i (car p))
-                                                     (j (cadr p)))
-                                                 (+ (* i i i) (* j j j))))))
+  (define s (pairs-weighted integers integers w1))
   (define (iter s)
     (let ((e1 (stream-car s))
           (e2 (stream-car (stream-cdr s))))
-      (let ((s1 (+ (* (car e1) (car e1) (car e1)) (* (cadr e1) (cadr e1) (cadr e1))))
-            (s2 (+ (* (car e2) (car e2) (car e2)) (* (cadr e2) (cadr e2) (cadr e2)))))
-        (if (= s1 s2)
-            (cons-stream s1 (iter (stream-cdr (stream-cdr s))))
-            (iter (stream-cdr (stream-cdr s)))))))
+        (if (= (w1 e1) (w1 e2))
+            (cons-stream (w1 e1) (iter (stream-cdr (stream-cdr s))))
+            (iter (stream-cdr s)))))
   (iter s))
 ```
 
 Pretty straightforward definition.  Using `rn`, we can inspect the generated
 stream to see that the next five Ramanujan numbers are: $$4104, 20683, 32832,
 64232, 65728$$.
+

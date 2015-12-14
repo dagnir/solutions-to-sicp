@@ -612,3 +612,15 @@ stream to see that the next five Ramanujan numbers are: $$4104, 20683, 32832,
 
 Very similar to to 3.71.  Note that the string consists of pairs of the number
 and the three different pairs.
+
+###Ex 3.73
+
+```scheme
+(define (RC R C dt)
+  (lambda (i v0)
+    (add-streams (scale-stream i R)
+                 ((integral (scale-stream i (/ 1 C)) v0 dt)))))
+```
+
+The diagram was very helpful for this exercise and just involved a direct
+translation to code.

@@ -591,3 +591,24 @@ Pretty straightforward definition.  Using `rn`, we can inspect the generated
 stream to see that the next five Ramanujan numbers are: $$4104, 20683, 32832,
 64232, 65728$$.
 
+###Ex 3.72
+
+```scheme
+  (define (w2 p)
+    (let ((i (car p))
+          (j (cadr p)))
+      (+ (* i i) (* j j))))
+(define (sum-of-2-squares)
+  (define s (pairs-weighted integers integers w2))
+  (define (iter s)
+    (let ((p1 (stream-car s))
+          (p2 (stream-car (stream-cdr s)))
+          (p3 (stream-car (stream-cdr (stream-cdr s)))))
+      (if (= (w2 p1) (w2 p2) (w2 p3))
+          (cons-stream (cons (w2 p1) (list p1 p2 p3)) (iter (stream-cdr (stream-cdr (stream-cdr s)))))
+          (iter (stream-cdr s)))))
+  (iter s))
+```
+
+Very similar to to 3.71.  Note that the string consists of pairs of the number
+and the three different pairs.

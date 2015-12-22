@@ -635,3 +635,19 @@ translation to code.
 `sign-change-character` expects two consecutive elements in the stream, and we
 can do this by making the second stream for `stream-map` the `stream-cdr` of
 `sense-data`.
+
+###Ex 3.75
+
+Assuming Alyssa intends to compute the [comulative moving
+average](https://en.wikipedia.org/wiki/Moving_average#Cumulative_moving_average)
+then Louis' version is not correct because it does not compute it correctly.
+In particular, it does not account for the number of data points seen so far.
+The correct version requires an extra parameter (`n`) to keep track of the
+number of data points seen so far.
+
+```scheme
+(define (make-zero-crossings input-stream last-value n)
+  (let ((avpt (+ last-value (/ (- (stream-car input-stream) last-value) (+ n 1)))))
+    (cons-stream (sign-change-detector last-value avpt)
+                 (make-zero-crossings (stream-cdr input-stream) avpt (+ n 1)))))
+```

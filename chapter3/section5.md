@@ -638,16 +638,18 @@ can do this by making the second stream for `stream-map` the `stream-cdr` of
 
 ###Ex 3.75
 
-Assuming Alyssa intends to compute the [comulative moving
-average](https://en.wikipedia.org/wiki/Moving_average#Cumulative_moving_average)
-then Louis' version is not correct because it does not compute it correctly.
-In particular, it does not account for the number of data points seen so far.
-The correct version requires an extra parameter (`n`) to keep track of the
-number of data points seen so far.
+The bug in Louis' version is in the expression `(sign-change-detector avpt
+last-value)`.  He's comparing the computed average with the current element in
+the stream to compute the sign change.  However, he really should be comparing
+the currently computed average with the previously computed average.  Here is
+the fixed version with an extra parameter added to pass along the previous
+average:
 
 ```scheme
-(define (make-zero-crossings input-stream last-value n)
-  (let ((avpt (+ last-value (/ (- (stream-car input-stream) last-value) (+ n 1)))))
-    (cons-stream (sign-change-detector last-value avpt)
-                 (make-zero-crossings (stream-cdr input-stream) avpt (+ n 1)))))
+(define (make-zero-crossings input-stream last-value last-average)
+  (let ((avpt (/ (+ (stream-car input-stream) last-value) 2)))
+    (cons-stream (sign-change-detector last-average avpt)
+                 (make-zero-crossings (stream-cdr input-stream)
+                                      (stream-car input-stream)
+                                      avpt))))
 ```

@@ -610,7 +610,7 @@ stream to see that the next five Ramanujan numbers are: $$4104, 20683, 32832,
   (iter s))
 ```
 
-Very similar to to 3.71.  Note that the string consists of pairs of the number
+Very similar to to 3.71.  Note that the stream consists of pairs of the number
 and the three different pairs.
 
 ###Ex 3.73

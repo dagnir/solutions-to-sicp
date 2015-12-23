@@ -688,3 +688,16 @@ Then we can modify `make-zero-crossings` to accept a "conditioning" procedure:
 
 The integrand is now delayed so we `force` it to obtain the stream, and then
 `delay` the `stream-cdr` when recursively calling `integral`.
+
+###Ex 3.78
+
+```scheme
+(define (solve-2nd a b dt y0 dy0)
+  (define dy (integral (delay ddy) dy0 dt))
+  (define y (integral (delay dy) y0 dt))
+  (define ddy (add-streams (scale-stream dy a)
+                           (scale-stream y b)))
+  y)
+```
+
+Like in 3.73, careful study of the diagram for this one was very helpful.

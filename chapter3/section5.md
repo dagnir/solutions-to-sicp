@@ -653,3 +653,38 @@ average:
                                       (stream-car input-stream)
                                       avpt))))
 ```
+
+###Ex 3.76
+
+For `smooth` we use the same "trick" as we did in 3.74 to compute the original
+unfiltered zero crossings:
+
+```scheme
+(define (smooth input-stream)
+  (stream-map (lambda (a b) (/ (+ a b) 2)) input-stream (stream-cdr input-stream)))
+```
+
+Then we can modify `make-zero-crossings` to accept a "conditioning" procedure:
+
+```scheme
+(define (make-zero-crossing input-stream condition)
+  (define conditioned (condition input-stream))
+  (stream-map sign-change-detector conditioned (stream-cdr conditioned)))
+```
+
+###Ex 3.77
+
+```scheme
+(define (integral delayed-integrand initial-value dt)
+  (cons-stream initial-value
+               (let ((integrand (force delayed-integrand)))
+                 (if (stream-null? integrand)
+                     the-empty-stream
+                     (integral (delay (stream-cdr integrand))
+                               (+ (* dt (stream-car integrand))
+                                  initial-value)
+                               dt)))))
+```
+
+The integrand is now delayed so we `force` it to obtain the stream, and then
+`delay` the `stream-cdr` when recursively calling `integral`.

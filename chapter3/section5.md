@@ -739,7 +739,7 @@ And modeling the circuit described in the problem:
   (define random-init 7)
   (define (stream-update req prev)
     (cond ((eq? (car req) 'generate) (rand-update prev))
-                                     ((eq? (car req) 'reset) (cdr req))))
+          ((eq? (car req) 'reset) (cdr req))))
   (define rng-stream
     (cons-stream (stream-update (stream-car req) random-init)
                  (stream-map stream-update

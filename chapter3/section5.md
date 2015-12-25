@@ -731,3 +731,25 @@ And modeling the circuit described in the problem:
 ```scheme
 (define circuit ((RLC 1 1 0.2 0.1) 10 0))
 ```
+
+###Ex 3.81
+
+```scheme
+(define (rand req-stream)
+  (define random-init 7)
+  (define (stream-update req prev)
+    (cond ((eq? (car req) 'generate) (rand-update prev))
+                                     ((eq? (car req) 'reset) (cdr req))))
+  (define rng-stream
+    (cons-stream (stream-update (stream-car req) random-init)
+                 (stream-map stream-update
+                             (stream-cdr req-stream)
+                             rng-stream)))
+  rng-stream)
+```
+
+Here I model the requests as `cons` pairs because `'reset` requires passing in
+the reset value.  We can generate the stream of random numbers by
+inspecting the next value in the request stream and either generating a random
+number based on the previously generated number or resetting it to the
+specified value.

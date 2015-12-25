@@ -701,3 +701,13 @@ The integrand is now delayed so we `force` it to obtain the stream, and then
 ```
 
 Like in 3.73, careful study of the diagram for this one was very helpful.
+
+###Ex 3.79
+
+```scheme
+(define (solve-2nd2 dt y0 dy0 f)
+  (define dy (integral (delay ddy) dy0 dt))
+  (define y (integral (delay dy) y0 dt))
+  (define ddy (f dy y))
+  y)
+```

@@ -711,3 +711,23 @@ Like in 3.73, careful study of the diagram for this one was very helpful.
   (define ddy (f dy y))
   y)
 ```
+
+###Ex 3.80
+
+```scheme
+(define (RLC R L C dt)
+  (lambda (v_C0 i_L0)
+    (define v_C (integral (delay dv_C) v_C0 dt))
+    (define i_L (integral (delay di_L) i_L0 dt))
+    (define dv_C (scale-stream i_L (/ -1 C)))
+    (define di_L (add-streams (scale-stream i_L (/ (- R) L))
+                              (scale-stream v_C (/ 1 L))))
+    (cons v_C i_L)))
+
+```
+
+And modeling the circuit described in the problem:
+
+```scheme
+(define circuit ((RLC 1 1 0.2 0.1) 10 0))
+```

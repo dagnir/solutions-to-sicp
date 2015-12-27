@@ -464,7 +464,7 @@ then:
 => 1542
 ```
 
-It's not exact since $$2^1 \cdot 100 = 100$$ and $$2^4 \cdot 100 = 1600$$ but
+It's not exact since $$2^1 \cdot 100 = 200$$ and $$2^4 \cdot 100 = 1600$$ but
 it's close.
 
 For $$(99, 100)$$, we can estimate about $$\approx 2^{99} \cdot 100$$ preceding

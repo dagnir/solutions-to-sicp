@@ -753,3 +753,23 @@ the reset value.  We can generate the stream of random numbers by
 inspecting the next value in the request stream and either generating a random
 number based on the previously generated number or resetting it to the
 specified value.
+
+###Ex 3.82
+
+```scheme
+(define (estimate-integral P x1 x2 y1 y2)
+  (define (experiment)
+    (let ((x (random-in-range x1 x2))
+          (y (random-in-range y1 y2)))
+      (cons-stream (P x y)
+                   (experiment))))
+  (let ((rect-area (* (- y2 y1) (- x2 x1))))
+    (stream-map (lambda (portion) (* 1.0 portion rect-area))
+                (monte-carlo (experiment) 0 0))))
+```
+
+We construct an infinite stream of experiments, using `P`, then simply pass it
+as an argument to `monte-carlo`.  We map the elements of the resulting stream
+from `monte-carlo`, which gives us the proportion of experiments that passed,
+and multiply it with the area of the enclosing rectangle to find the area
+estimate.

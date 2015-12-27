@@ -467,8 +467,8 @@ then:
 It's not exact since $$2^1 \cdot 100 = 100$$ and $$2^4 \cdot 100 = 1600$$ but
 it's close.
 
-For $$(99, 100)$$, we can estimate about $$\approx 2^99 \cdot 100$$ preceding
-elements, and for $$(100, 100)$$, $$\approx 2^100 \cdot 100$$ preceding
+For $$(99, 100)$$, we can estimate about $$\approx 2^{99} \cdot 100$$ preceding
+elements, and for $$(100, 100)$$, $$\approx 2^{100} \cdot 100$$ preceding
 elements.
 
 Note: It seems as we go down, the accuracy of the estimate gets worse, i.e. the

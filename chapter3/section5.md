@@ -418,6 +418,64 @@ Finally, we can do even better bo using `accelerated-sequence`:
 (define ln2-stream-3 (accelerated-sequence euler-transform ln2-stream-1))
 ```
 
+###Ex 3.66
+
+The form of `pairs` is to generate $$(S_0,T_0)$$, then interleave the elements
+from the rest of the first row with the elements from the rest of the rows.  So
+the pattern goes, an element from the first row, and element from one of rows
+below, an element from the first row, an element from the other rows, and so
+forth.  This is true for any row $$i$$; that is, we get next element from the
+current row $$i$$, then an element from the stream of the elements below row
+$$i$$, then an element from row $$i$$, etc.
+
+Therefore, for an element $$(1, n)$$, that is, an element in the first row,
+there are $$\approx 2n$$ elements that precede it.
+
+We can also observe that for column $$c$$ and rows $$i, j$$ with $$i < j$$,
+then $$(i,c)$$ will appear in the stream before $$(j, c$$).
+
+Since for any row $$i$$, we only see an element $$(i, n)$$ after $$2n$$
+preceding elements, we can expect this to grow exponentially as we go down the
+table.  In general, for an element $$(i, j)$$ in the table of pairs, then the
+number of elements that precede it are $$\approx 2^ij$$.
+
+We can verify this using the following procedure to find the position of the
+element in question:
+
+```scheme
+(define p (pairs integers integers))
+
+(define (find a b)
+  (define (iter i stream)
+    (let ((p (stream-car stream)))
+      (if (and (= (car p) a) (= (cadr p) b))
+          i
+          (iter (+ i 1) (stream-cdr stream)))))
+  (iter 0 p))
+```
+
+then:
+
+```scheme
+(find 1 100)
+=> 197
+
+(find 4 100)
+=> 1542
+```
+
+It's not exact since $$2^1 \cdot 100 = 100$$ and $$2^4 \cdot 100 = 1600$$ but
+it's close.
+
+For $$(99, 100)$$, we can estimate about $$\approx 2^99 \cdot 100$$ preceding
+elements, and for $$(100, 100)$$, $$\approx 2^100 \cdot 100$$ preceding
+elements.
+
+Note: It seems as we go down, the accuracy of the estimate gets worse, i.e. the
+difference between the actual position and the estimate widens, which leads me
+to believe there's a second component to the estimate that grows as a function
+of the row.  I may revisit this again.
+
 ###Ex 3.67
 
 Here is the table that the book  presents that contains all the elements of the

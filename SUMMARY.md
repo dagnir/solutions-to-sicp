@@ -16,3 +16,5 @@
   * [Section 3](chapter3/section3.md)
   * [Section 4](chapter3/section4.md)
   * [Section 5](chapter3/section5.md)
+* Chapter 4
+  * [Section 1](chapter4/section1.md)

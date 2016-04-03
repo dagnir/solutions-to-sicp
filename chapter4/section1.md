@@ -154,3 +154,37 @@ Then, we actually "install" the different evaluation procedures:
   (put 'eval 'lambda eval-lambda)
   'ok)
 ```
+
+### Ex 4.4
+
+We implement `eval-and` and `eval-or` as iterative procedures:
+
+```scheme
+(define (and? exp)
+  (tagged-list? exp 'and))
+
+(define (eval-and exp env)
+  (define (iter exps env)
+    (if (last-exp? exps)
+        (eval (first-exp exps) env)
+        (if (eval (first-exp exps) env)
+            (iter (rest-exps exps) env)
+            #f)))
+  (iter (cdr exp) env))
+
+(define (or? exp)
+  (tagged-list? exp 'or))
+
+(define (eval-or exp env)
+  (define (iter exps env)
+    (if (last-exp? exps)
+      (eval (first-exp exps) env))
+    (if (eval (first-exp exps) env)
+        #t
+        (iter (rest-exps exps) env)))
+  (iter (cdr exp env) env))
+```
+
+The structure of the procedures are identical.  The ony difference is that
+iteration stops for `eval-and` when the first false expression is evaluated,
+and for `eval-or` it stops when the first true expression is evaluated.

@@ -226,3 +226,40 @@ expression that take the following form:
 ```
 
 Note that `test` is evaluated twice, so this assumes that `test` is pure.
+
+### Ex 4.6
+
+First we define a set of helper procedures:
+
+```scheme
+(define (let? exp)
+  (eq? (car exp) 'let))
+
+(define (let-var-bindings exp)
+  (cadr exp))
+
+(define (let-var-names bindings)
+  (map car bindings))
+
+(define (let-var-values bindings)
+  (map cadr bindings))
+
+(define (let-body exp)
+  (cddr exp))
+```
+
+Then we can easily implement `let->combination`:
+
+```scheme
+(define (let->combination exp)
+  (let ((bindings (let-var-bindings exp)))
+    (append
+     (list
+      (make-lambda (let-var-names bindings)
+                   (let-body exp)))
+     (let-var-values bindings))))
+```
+
+We transform the `let` expression into a combination by creating a `lambda`
+using the variable names and body from the `let` expression, then applying that
+lambda to the values of the variables in the `let` expression.

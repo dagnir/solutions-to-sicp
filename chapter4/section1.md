@@ -188,3 +188,41 @@ We implement `eval-and` and `eval-or` as iterative procedures:
 The structure of the procedures are identical.  The ony difference is that
 iteration stops for `eval-and` when the first false expression is evaluated,
 and for `eval-or` it stops when the first true expression is evaluated.
+
+
+### Ex 4.5
+
+Here is the modified `expand-clauses`:
+
+```scheme
+(define (expand-clauses clauses)
+  (if (null? clauses)
+      'false                          ; no else clause
+      (let ((first (car clauses))
+            (rest (cdr clauses)))
+        (if (cond-else-clause? first)
+            (if (null? rest)
+                (sequence->exp (cond-actions first))
+                (error "ELSE clause isn't last -- COND->IF"
+                       clauses))
+            (if (eq? (car (cond-clauses first)) '=>)
+                (make-if (cond-predicate first)
+                         (list (cadr (cond-clauses first))
+                               (cond-predicate first))
+                         (expand-clauses rest))
+                (make-if (cond-predicate first)
+                         (sequence->exp (cond-actions first))
+                         (expand-clauses rest)))))))
+```
+
+We need to add a check to see if the the list of actions begins with the `'=>`
+symbol.  If it does, then we know it's the extended syntax and emit an `if`
+expression that take the following form:
+
+```scheme
+(if (test)
+    (recipient test)
+    ;; rest of expanded clauses)
+```
+
+Note that `test` is evaluated twice, so this assumes that `test` is pure.

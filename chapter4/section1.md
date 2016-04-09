@@ -263,3 +263,55 @@ Then we can easily implement `let->combination`:
 We transform the `let` expression into a combination by creating a `lambda`
 using the variable names and body from the `let` expression, then applying that
 lambda to the values of the variables in the `let` expression.
+
+### Ex 4.7
+
+We can transform a `let*` expression to a nested of `let` expression by
+recursively binding the the variables from left to right.  Taking the example
+given in the book we would transform
+
+```scheme
+(let* ((x 3)
+       (y (+ x 2))
+       (z (+ x y 5)))
+  (* x z))
+```
+
+by first binding `x`:
+
+```scheme
+(let ((x 3))
+  ...)
+```
+
+then inside the body of the `let`, we bind the rest of the variables.  Binding
+`y`:
+
+```scheme
+(let ((x 3))
+  (let ((y (+ x 2)))
+    ...
+```
+
+then finally binding `z`:
+
+```scheme
+(let ((x 3))
+  (let ((y (+ x 2)))
+    (let ((z (+ x y 5)))
+      ...
+      )))
+```
+Since the `let` that binds `z` is also the last one, it will contain the body
+of the original `let*`:
+
+```scheme
+(let ((x 3))
+  (let ((y (+ x 2)))
+    (let ((z (+ x y 5)))
+      (* x z)
+      )))
+```
+
+No it is sufficient to add the clause, assuming we have a working
+implementation of `let`.

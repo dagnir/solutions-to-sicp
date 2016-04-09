@@ -313,5 +313,36 @@ of the original `let*`:
       )))
 ```
 
+We implement the transformation as a recursive procedure:
+
+```scheme
+(define (let*->nested-lets exp)
+  (let*->nested-lets-helper (let-var-bindings exp) (let-body exp)))
+
+(define (let*->nested-lets-helper bindings body)
+  (list 'let
+        (list (car bindings))
+        (if (null? (cdr bindings))
+            (sequence->exp body)
+            (let*->nested-lets-helper (cdr bindings) body))))
+```
+
+Here all of the work is done in `let*->nested-lets-helper`.  We take the list
+of parameter bindings, and the body of the `let*`. For each binding, create
+a new nested `let`.  If we're a the last binding, we make the body of the `let`
+the body of the `let*`, and if not, the body of the current `let` is the `let`
+that binds the next parameter.
+
+
+Finally, we define a `let*?` procedure, in order to add `let*` functionality
+into the evaluator:
+
+```scheme
+(define (let*? exp)
+  (and (pair? exp)
+       (eq? (car exp) 'let*)))
+
+```
+
 No it is sufficient to add the clause, assuming we have a working
 implementation of `let`.

@@ -346,3 +346,58 @@ into the evaluator:
 
 No it is sufficient to add the clause, assuming we have a working
 implementation of `let`.
+
+
+### Ex 4.8
+
+We can transform a named `let` such as
+
+```scheme
+(let fact ((a 1) (n 5))
+  (if (= n 0)
+      a
+      (fact (* a n)
+            (- n 1))))
+```
+
+into the following combination:
+
+```scheme
+((lambda (a n)
+   (define fact (lambda (a n)
+                  (if (= n 0)
+                      a
+                      (fact (* a n)
+                            (- n 1)))))
+   (fact a n))
+ 1
+ 5)
+```
+
+The outer lambda takes the parameters bound in the `let` as in the previous
+implementation, but within this lamba we `define` another `lambda` that takes
+the same parameters, and whose body is the one defined in the `let`.  Back in
+the outer `lambda`, we create a combination that calls the procedure just
+defined; we then immediately apply this outer lambda to the values of bound
+parameters, as in the previous implementation.
+
+Here's is the modified `let->combination`:
+
+```scheme
+(define (let->combination exp)
+  (let ((body-lambda (make-lambda (let-param-names exp)
+                                  (let-body exp))))
+    (if (named-let? exp)
+        (append
+         (list (make-lambda (let-param-names exp)
+                            (list
+                             (list 'define (let-var exp) body-lambda)
+                             (cons (let-var exp) (let-param-names exp)))))
+         (let-param-values exp))
+        (append
+         (list body-lambda)
+         (let-param-values exp)))))
+```
+
+Notice that if it's not a named `let`, it's identical to the previous
+implementation.

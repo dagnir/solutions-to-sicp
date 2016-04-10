@@ -252,7 +252,7 @@ First we define a set of helper procedures:
   (cddr exp))
 ```
 
-Then we cen easily define `let->combination`:
+Then we can easily define `let->combination`:
 
 ```scheme
 (define (let->combination exp)

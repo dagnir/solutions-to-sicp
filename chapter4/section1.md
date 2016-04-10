@@ -233,36 +233,38 @@ First we define a set of helper procedures:
 
 ```scheme
 (define (let? exp)
-  (eq? (car exp) 'let))
+  (and (pair? exp)
+       (eq? (car exp) 'let)))
 
-(define (let-var-bindings exp)
+(define (let-param-bindings exp)
   (cadr exp))
 
-(define (let-var-names bindings)
-  (map car bindings))
+(define (let-bindings exp)
+  (cadr exp))
 
-(define (let-var-values bindings)
-  (map cadr bindings))
+(define (let-param-names exp)
+  (map car (let-bindings exp)))
+
+(define (let-param-values exp)
+  (map cadr (let-bindings exp)))
 
 (define (let-body exp)
   (cddr exp))
 ```
 
-Then we can easily implement `let->combination`:
+Then we cen easily define `let->combination`:
 
 ```scheme
 (define (let->combination exp)
-  (let ((bindings (let-var-bindings exp)))
-    (append
-     (list
-      (make-lambda (let-var-names bindings)
-                   (let-body exp)))
-     (let-var-values bindings))))
+  (append
+   (list (make-lambda (let-param-names exp)
+                      (let-body exp)))
+   (let-param-values exp)))
 ```
 
 We transform the `let` expression into a combination by creating a `lambda`
-using the variable names and body from the `let` expression, then applying that
-lambda to the values of the variables in the `let` expression.
+using the parameter names and body from the `let` expression, then applying that
+lambda to the values of the parameters in the `let` expression.
 
 ### Ex 4.7
 

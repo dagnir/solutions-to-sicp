@@ -403,3 +403,63 @@ Here's is the modified `let->combination`:
 
 Notice that if it's not a named `let`, it's identical to the previous
 implementation.
+
+### Ex 4.9
+
+One of the most common looping constructs is the `while` loop, so we'll recreate that here.
+
+Here is the syntax I've decided on:
+```scheme
+(while <condition> <expr 1> <expr 2> ... <expr N>)
+```
+While the expression `<condition>` evaluates to `#t`, we execute `<expr>`.  We
+can turn this into the following derived procedure:
+
+```scheme
+((lambda ()
+  (define (while-loop)
+    (if <condition>
+        (begin
+          <expr 1>
+          <expr 2>
+          ...
+          <expr N>
+          (while-loop))
+  (while-loop)))
+```
+
+We create a `lambda` that takes no arguments that we immediately apply.  Inside
+this `lambda`, we define a procedure of no arguments, `while-loop`, and inside,
+if `<condition>` evaluates to `#t`, then we evaluate the expression in
+sequence, and recursively apply `while-loop`.
+
+After the `define`, the lambda immediately applies `while-loop`.
+Unfortunately, the way this works, you pretty much require the use of `set!` to
+avoide any type of infinite loop.
+
+The code:
+```scheme
+(define (while? exp)
+  (and (pair? exp)
+       (eq? (car exp) 'while)))
+
+(define (while-cond exp)
+  (cadr exp))
+
+(define (while-body exp)
+  (cddr exp))
+
+(define (while->lambda exp)
+  (let ((cond (while-cond exp))
+        (body (append (while-body exp)
+                      (list '(while-loop)))))
+    (make-lambda '()
+                 (list
+                  (list 'define
+                       '(while-loop)
+                       (make-if cond
+                                (sequence->exp body)
+                                (sequence->exp '((cond)))))
+                  '(while-loop)))))
+
+```
